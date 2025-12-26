@@ -5,468 +5,547 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Year, Stronger Roots | EKOLiTiKA</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
 
         :root {
-            --bg-deep: #050b14;
-            --eko-green: #10b981;
-            --eko-dark: #064e3b;
-            --accent: #38bdf8;
-            --glass: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --bg: #0d1a15; /* Deep Forest Green */
+            --paper: #f9f7f2; /* Warm off-white */
+            --accent: #10b981; 
+            --gold: #d4af37;
+            --text: #f9f7f2;
+            --muted: rgba(249, 247, 242, 0.6);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background: var(--bg-deep);
-            color: #f8fafc;
-            overflow-x: hidden;
-            min-height: 100vh;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* --- Canvas Layers --- */
-        #snow-canvas {
+        /* Organic Texture Overlay */
+        body::before {
+            content: "";
             position: fixed;
-            inset: 0;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            opacity: 0.15;
             pointer-events: none;
-            z-index: 5;
+            z-index: 1000;
+            background: url('https://www.transparenttextures.com/patterns/recycled-paper.png');
         }
 
-        /* --- Persistent Premium Header --- */
-        header {
+        /* Soft Winter Glow */
+        .ambient-glow {
             position: fixed;
-            top: 0; left: 0; width: 100%;
-            height: 120px;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(13, 26, 21, 0) 70%);
+            bottom: -10vw;
+            right: -10vw;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        header {
+            padding: 40px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            z-index: 100;
-            background: linear-gradient(to bottom, var(--bg-deep) 40%, transparent);
-            backdrop-filter: blur(5px);
-        }
-
-        .logo-wrap {
-            position: relative;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .logo-wrap:hover { transform: scale(1.05); }
-
-        .logo-text {
-            font-weight: 800;
-            font-size: 1.8rem;
-            letter-spacing: 0.15em;
-            color: #fff;
-            position: relative;
-            /* Motion Effect: Northern Lights Glow */
-            text-shadow: 0 0 20px rgba(16, 185, 129, 0);
-            animation: aurora 6s infinite alternate ease-in-out;
-        }
-
-        @keyframes aurora {
-            0% { text-shadow: 0 0 10px rgba(16, 185, 129, 0.2); color: #fff; }
-            50% { text-shadow: 0 0 30px rgba(56, 189, 248, 0.6); color: #e0f2fe; }
-            100% { text-shadow: 0 0 10px rgba(16, 185, 129, 0.2); color: #fff; }
-        }
-
-        .logo-snow-pile {
-            position: absolute;
-            top: -4px; left: 0; width: 100%; height: 8px;
-            background: white;
-            border-radius: 10px 10px 0 0;
-            filter: blur(1px);
-            opacity: 0.9;
-        }
-
-        .sub-header {
-            font-size: 0.65rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.4em;
-            color: var(--accent);
-            margin-top: 8px;
-            opacity: 0.8;
-        }
-
-        /* --- Main Layout --- */
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 140px 20px 60px;
             z-index: 10;
         }
 
-        .hero-section {
-            max-width: 800px;
-            text-align: center;
+        .brand {
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            color: var(--paper);
         }
 
-        h1.display-title {
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 800;
-            line-height: 0.95;
-            margin-bottom: 2rem;
-            background: linear-gradient(180deg, #fff 0%, #94a3b8 100%);
+        .ritual-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: var(--paper);
+            color: var(--bg);
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.1em;
+        }
+
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            padding: 0 60px 60px 60px;
+            align-items: center;
+            z-index: 5;
+        }
+
+        .hero-section {
+            max-width: 500px;
+        }
+
+        h1 {
+            font-size: 5rem;
+            line-height: 0.85;
+            font-weight: 900;
+            margin-bottom: 24px;
+            letter-spacing: -0.04em;
+            color: var(--paper);
+            background: linear-gradient(135deg, var(--paper), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .intro-text {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            max-width: 550px;
-            margin: 0 auto 3rem;
+        .description {
+            color: var(--muted);
             line-height: 1.6;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 400px;
         }
 
-        /* --- Custom Buttons --- */
-        .btn-premium {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--glass-border);
-            color: white;
-            padding: 16px 40px;
-            border-radius: 100px;
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .btn-premium:hover {
-            background: white;
-            color: var(--bg-deep);
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(56, 189, 248, 0.2);
-        }
-
-        /* --- The Interactive Tree --- */
-        #tree-canvas {
-            display: none;
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
-            animation: fadeIn 1.5s ease;
-        }
-
-        .tree-svg {
-            width: 100%;
-            height: auto;
-            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.5));
-        }
-
-        /* --- Fix Shakey Hover --- 
-           We use a transparent overlay group for the hover target to keep the hit-area stable.
-        */
-        .ornament-hit-area {
-            cursor: pointer;
-            pointer-events: all;
-            fill: transparent;
-        }
-
-        .ornament-visual {
-            pointer-events: none; /* Let the hit area handle the mouse */
-            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .ornament-group:hover .ornament-visual {
-            transform: translateY(-8px) scale(1.2);
-            filter: brightness(1.2) drop-shadow(0 10px 20px rgba(255,255,255,0.3));
-        }
-
-        .glimpse-label {
-            pointer-events: none;
-            opacity: 0;
-            transition: all 0.3s ease;
-            transform: translateY(10px);
-        }
-
-        .ornament-group:hover .glimpse-label {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- Modal Styling --- */
-        .modal {
-            position: fixed;
-            inset: 0;
-            background: rgba(5, 11, 20, 0.9);
-            backdrop-filter: blur(20px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-
-        .modal-card {
-            background: #0c1421;
-            border: 1px solid var(--glass-border);
-            padding: 40px;
-            border-radius: 32px;
-            max-width: 500px;
-            width: 100%;
+        /* The Tree: A Minimalist, High-Design Silhouette */
+        .tree-stage {
             position: relative;
-            text-align: center;
+            height: 75vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .modal-tag {
-            color: var(--accent);
-            font-size: 0.75rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 12px;
-            display: block;
+        .tree-graphic {
+            height: 100%;
+            width: auto;
+            fill: none;
+            stroke: var(--paper);
+            stroke-width: 0.25;
+            opacity: 0.3;
         }
 
-        .modal-title { font-size: 2rem; margin-bottom: 1rem; color: #fff; }
-        .modal-body { color: #94a3b8; line-height: 1.6; margin-bottom: 2rem; }
-
-        .prompt-box {
-            background: rgba(0,0,0,0.3);
-            border-radius: 16px;
-            padding: 20px;
-            font-size: 0.9rem;
-            color: #e2e8f0;
-            text-align: left;
-            margin-bottom: 1.5rem;
-            border-left: 3px solid var(--eko-green);
+        /* Nodes: Minimal but "Luminous" */
+        .node {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--paper);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translate(-50%, -50%) rotate(45deg); /* Diamond shape */
+            box-shadow: 0 0 0 4px rgba(249, 247, 242, 0.1);
         }
 
-        /* --- Footer --- */
-        footer {
-            padding: 40px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #475569;
+        .node:hover {
+            background: var(--accent);
+            width: 16px;
+            height: 16px;
+            box-shadow: 0 0 25px var(--accent);
         }
 
-        footer a {
-            color: #64748b;
-            text-decoration: none;
+        .node-label {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-45deg);
+            white-space: nowrap;
+            font-size: 0.7rem;
             font-weight: 700;
-            transition: color 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--paper);
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            pointer-events: none;
         }
 
-        footer a:hover { color: var(--eko-green); }
-
-        .btn-story-recall {
-            margin-top: 40px;
-            opacity: 0.5;
-            font-size: 0.75rem;
-            background: none; border: none; color: white; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 0.1em;
+        .node:hover .node-label {
+            opacity: 1;
+            transform: translateY(-50%) translateX(10px) rotate(-45deg);
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* Interactive Info Card */
+        .info-panel {
+            background: rgba(249, 247, 242, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(249, 247, 242, 0.1);
+            padding: 30px;
+            border-radius: 2px;
+            margin-top: 20px;
+            display: none;
+            animation: slideUp 0.4s ease-out;
+        }
 
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .info-title { 
+            font-weight: 900; 
+            font-size: 1.5rem; 
+            margin-bottom: 12px; 
+            color: var(--accent); 
+            letter-spacing: -0.02em; 
+        }
+        
+        .prompt-preview {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-top: 8px;
+            line-height: 1.5;
+            font-style: italic;
+        }
+
+        .copy-prompt-btn {
+            margin-top: 20px;
+            padding: 10px 24px;
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .copy-prompt-btn:hover {
+            background: var(--paper);
+            color: var(--bg);
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        footer {
+            position: fixed;
+            bottom: 40px;
+            left: 60px;
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1000px) {
+            main { grid-template-columns: 1fr; padding: 20px; }
+            .tree-stage { height: 40vh; margin-top: 40px; }
+            h1 { font-size: 3rem; }
+            .hero-section { text-align: center; margin: 0 auto; }
+            .info-panel { position: fixed; bottom: 0; left: 0; width: 100%; border-radius: 20px 20px 0 0; }
+        }
     </style>
 </head>
 <body>
 
-<canvas id="snow-canvas"></canvas>
+<div class="ambient-glow"></div>
 
 <header>
-    <a href="https://ekolitika.framer.website/" target="_blank" class="logo-wrap">
-        <div class="logo-snow-pile"></div>
-        <span class="logo-text">EKOLiTiKA</span>
-        <span class="sub-header">New Year, Stronger Roots</span>
-    </a>
+    <div class="brand">EKOLiTiKA</div>
+    <div class="ritual-tag">NEW YEAR, STRONGER ROOTS</div>
 </header>
 
 <main>
-    <div class="hero-section" id="intro-block">
-        <h1 class="display-title">Roots grow best in the quiet.</h1>
-        <p class="intro-text">Before the bloom of spring, there is the wisdom of winter. Take a moment to anchor yourself with 12 seeds of intentional growth for 2026.</p>
-        <button class="btn-premium" onclick="enterTree()">Enter the Forest</button>
-    </div>
+    <section class="hero-section">
+        <h1>NEW YEAR<br>STRONGER<br>ROOTS</h1>
+        <p class="description">
+            Twelve prompts for your 2026 growth. Click nodes to reveal AI-ready templates for real progress.
+        </p>
+        
+        <div id="active-info" class="info-panel">
+            <div class="info-title" id="p-title">Roots of Purpose</div>
+            <div class="info-text" id="p-desc">January: Clarify what truly grounds you.</div>
+            <div class="prompt-preview" id="p-preview">Copy the full prompt → paste into ChatGPT → fill placeholders → get your 3-month plan</div>
+            <button class="copy-prompt-btn" id="copyBtn">Copy Prompt</button>
+        </div>
+    </section>
 
-    <div id="tree-canvas">
-        <svg class="tree-svg" viewBox="0 0 500 700" xmlns="http://www.w3.org/2000/svg">
-            <!-- Shadows & Depth -->
-            <ellipse cx="250" cy="650" rx="150" ry="20" fill="rgba(0,0,0,0.4)" />
-            
-            <!-- Realistic Tree Structure -->
-            <path d="M230 650 L270 650 L260 550 L240 550 Z" fill="#1a120b" />
-            
-            <!-- Layered Branches with Snow Caps -->
-            <g id="branches">
-                <!-- Bottom -->
-                <path d="M50 580 L250 400 L450 580 Q250 620 50 580" fill="#042f2e" />
-                <path d="M50 580 Q250 565 450 580 Q250 550 50 580" fill="white" opacity="0.3" />
-                <!-- Middle -->
-                <path d="M90 460 L250 300 L410 460 Q250 500 90 460" fill="#064e3b" />
-                <path d="M90 460 Q250 445 410 460 Q250 430 90 460" fill="white" opacity="0.4" />
-                <!-- Top -->
-                <path d="M140 340 L250 200 L360 340 Q250 380 140 340" fill="#065f46" />
-                <path d="M140 340 Q250 325 360 340 Q250 310 140 340" fill="white" opacity="0.5" />
-                <!-- Apex -->
-                <path d="M190 220 L250 100 L310 220 Q250 240 190 220" fill="#10b981" />
-                <path d="M190 220 Q250 215 310 220 L250 210 Z" fill="white" opacity="0.8" />
-            </g>
-
-            <!-- Ornaments Grouped for Stability -->
-            <g id="ornaments-field"></g>
+    <section class="tree-stage">
+        <!-- Minimalist geometric tree -->
+        <svg class="tree-graphic" viewBox="0 0 100 120">
+            <path d="M50 5 L90 115 L10 115 Z" />
+            <path d="M50 5 L50 115" stroke-dasharray="1 3" />
+            <path d="M30 115 L50 90 L70 115" />
+            <path d="M38 90 L50 70 L62 90" />
+            <path d="M44 70 L50 55 L56 70" />
         </svg>
-
-        <button class="btn-story-recall" onclick="showIntro()">Back to Story</button>
-    </div>
+        <div id="nodes-container"></div>
+    </section>
 </main>
 
 <footer>
-    <p>© 2026 <a href="https://ekolitika.framer.website/" target="_blank">EKOLiTiKA</a> — Living with nature's patterns</p>
+    Skopje • Tools for living with nature's patterns
 </footer>
-
-<!-- Modal -->
-<div class="modal" id="modal">
-    <div class="modal-card">
-        <span class="modal-tag">Growth Seed</span>
-        <h2 class="modal-title" id="m-title">Title</h2>
-        <p class="modal-body" id="m-desc">Description goes here.</p>
-        <div class="prompt-box" id="m-prompt">Prompt text...</div>
-        <button class="btn-premium" style="width: 100%" id="copy-btn">Copy to your journal</button>
-        <button onclick="closeModal()" style="margin-top: 20px; background: none; border: none; color: #475569; cursor: pointer;">Close</button>
-    </div>
-</div>
 
 <script>
     const data = [
-        { title: 'Foundational Root', x: 250, y: 160, color: '#38bdf8', desc: 'Identify the core values that will keep you upright during 2026 storms.', prompt: 'What are my 3 non-negotiable values? How can I defend them this week?' },
-        { title: 'The Great Pruning', x: 180, y: 280, color: '#94a3b8', desc: 'Cutting back unnecessary projects to allow the vital ones to bloom.', prompt: 'List 5 things I am doing that do not serve my long-term growth. Pick 2 to stop immediately.' },
-        { title: 'Soil Enrichment', x: 320, y: 280, color: '#10b981', desc: 'Investing in your ecosystem and those who nurture you.', prompt: 'Who are the 3 people who push my growth? Plan a "thank you" gesture for each.' },
-        { title: 'Winter Stillness', x: 130, y: 400, color: '#e2e8f0', desc: 'Embracing the silence to hear your internal compass.', prompt: 'Commit to 10 minutes of phone-free stillness today. What was the loudest thought?' },
-        { title: 'Resilience Bark', x: 370, y: 400, color: '#38bdf8', desc: 'Building boundaries that protect your energy from external noise.', prompt: 'Identify one "energy leak" in my digital life. Create a boundary rule for it.' },
-        { title: 'Seasonal Rhythm', x: 250, y: 350, color: '#10b981', desc: 'Syncing your productivity with the cycles of the natural world.', prompt: 'How can I adjust my Q1 goals to respect the "low-energy" nature of winter?' },
-        { title: 'Creative Sap', x: 100, y: 520, color: '#38bdf8', desc: 'Letting inspiration flow without forcing the outcome.', prompt: 'Write for 5 minutes about a tree without using the words "green" or "branch".' },
-        { title: 'Legacy Seeds', x: 400, y: 520, color: '#94a3b8', desc: 'Planning for growth you might not see the end of.', prompt: 'What is one thing I can start now that will only bear fruit in 3 years?' },
-        { title: 'Open Canopy', x: 200, y: 480, color: '#fff', desc: 'Allowing new perspectives to reach your core.', prompt: 'Read an article from a field completely unrelated to my work. Find one connection.' },
-        { title: 'Deep Hydration', x: 300, y: 480, color: '#38bdf8', desc: 'Nurturing your physical health to sustain the mental climb.', prompt: 'What is the one physical habit that, if changed, would double my clarity?' },
-        { title: 'Symmetry Check', x: 250, y: 530, color: '#10b981', desc: 'Balancing your work life with your personal ecosystem.', prompt: 'Is my work taking more than it gives? List 3 ways to restore the balance.' },
-        { title: 'North Star', x: 250, y: 90, color: '#fbbf24', desc: 'The singular focus that directs your entire year.', prompt: 'If 2026 had a theme word, what would it be? Write it and place it where you see it daily.' }
+        { 
+            t: 'Jan', 
+            x: 50, y: 8, 
+            title: 'Roots of Purpose', 
+            desc: 'Clarify what truly grounds you', 
+            prompt: `I want you to help me clarify my deeper purpose and translate it into a practical 3‑month plan.
+
+Context:
+- My NGO/project or personal initiative: [describe it briefly — name, aims, type of work]
+- My current role and responsibilities: [explain what you actually do day‑to‑day]
+- My "epic moments" (times of pure alignment): [2–3 short examples]
+- My "ugh moments" (times of frustration or confusion): [2–3 short examples]
+
+Tasks for you:
+1. Summarize my core motivations in 3 sentences.
+2. Build a 3‑month plan with 3 focus areas, weekly actions, and a reflection habit.
+3. Suggest one metaphor from nature that fits my current root system.
+4. End with a monthly reflection question to test if my actions match my purpose.`
+        },
+        { 
+            t: 'Feb', 
+            x: 42, y: 35, 
+            title: 'Flow & Balance', 
+            desc: 'Redesign your work rhythm with nature\'s cycles', 
+            prompt: `Help me design a balanced routine that mirrors nature's rhythm over 3 months.
+
+Context:
+- My current energy pattern: [rapid, scattered, stagnant, steady — describe realistically]
+- My typical workweek structure: [describe your real schedule and stress points]
+- My emotional signals when I'm overworked or under‑stimulated: [list 2–3 patterns]
+
+Tasks for you:
+1. Create a weekly cycle (rest, growth, bloom, release) that fits my NGO context.
+2. Suggest simple boundaries or rituals that protect energy.
+3. Include 1 method to track balance (e.g. "energy check" log).
+4. End with a line that reminds me balance is a continuous flow, not a target.`
+        },
+        { 
+            t: 'Mar', 
+            x: 58, y: 35, 
+            title: 'Collaboration Seeds', 
+            desc: 'Nurture trust and partnership that last', 
+            prompt: `Help me strengthen relationships and mutual trust with partners/team over 3 months.
+
+Context:
+- Type of collaborations I'm part of: [youth groups, cultural projects, etc.]
+- Typical challenges I face with collaboration: [list honestly]
+- Partners or people I'd like to reconnect with: [name or describe]
+
+Tasks for you:
+1. Design a 3‑month trust‑building plan with 3 focus intentions and small weekly gestures.
+2. Include one ritual for team reflection or celebration.
+3. Create a "connection log" template I can use monthly.
+4. Suggest a natural metaphor for relationships (forest, river delta, roots network).`
+        },
+        { 
+            t: 'Apr', 
+            x: 35, y: 58, 
+            title: 'Story Harvest', 
+            desc: 'Turn lived moments into shared narratives', 
+            prompt: `Help me turn our daily work into living stories that inspire genuine connection.
+
+Context:
+- A recent project or event worth telling: [describe it shortly]
+- The real emotion behind it (joy, frustration, hope…): [be honest]
+- Who might need to hear this story: [audience or community]
+
+Tasks for you:
+1. Find key messages that reveal human truth without bragging.
+2. Create a 3‑month storytelling rhythm (formats, frequency, tone).
+3. Suggest 1 creative output per month (story card, short text, visual).
+4. End with a reflection question: "What changed in me while telling this story?"`
+        },
+        { 
+            t: 'May', 
+            x: 65, y: 58, 
+            title: 'Digital Garden', 
+            desc: 'Let technology support, not scatter you', 
+            prompt: `Help me simplify and align my digital tools so they support meaningful work.
+
+Context:
+- Tools/platforms we currently use: [list 3–6 tools and their purpose]
+- Common digital frustrations or chaos: [describe]
+- My tolerance for tech complexity (1–5): [rate yourself]
+
+Tasks for you:
+1. Suggest a gentle digital declutter plan for 3 months.
+2. Group tools into ecosystem roles (seed, soil, sunlight = input, storage, visibility).
+3. Recommend 1 weekly and 1 monthly maintenance habit.
+4. End with a reflection system to notice calmer workflow.`
+        },
+        { 
+            t: 'Jun', 
+            x: 50, y: 52, 
+            title: 'Shared Light', 
+            desc: 'Strengthen the sense of togetherness', 
+            prompt: `Help me strengthen the sense of togetherness across our community or team.
+
+Context:
+- Who is part of our community: [type of people, partners, volunteers]
+- How we usually communicate: [channels, frequency, tone]
+- Signs that connection might be fading: [examples]
+
+Tasks for you:
+1. Design a 3‑month "light sharing" plan — simple, human touchpoints for connection.
+2. Include one creative group ritual or exchange idea.
+3. Suggest a way to record glimpses of mutual support (quotes, images, mini‑logs).
+4. Conclude with a short line that reminds us what we give also brightens us.`
+        },
+        { 
+            t: 'Jul', 
+            x: 26, y: 82, 
+            title: 'Care & Renewal', 
+            desc: 'Protect your energy before it fades', 
+            prompt: `Guide me in building a 3‑month rhythm that prevents burnout and restores energy.
+
+Context:
+- My current signs of fatigue or inspiration: [describe both]
+- What gives me real rest (beyond sleep): [list 2–3 things]
+- Boundaries I struggle to hold: [name at least one]
+
+Tasks for you:
+1. Create a schedule with one renewing habit per week.
+2. Suggest a small self‑check reflection, like "Is this giving or draining me?"
+3. Recommend one symbolic act of release (e.g. digital detox, nature ritual).
+4. End with a line that redefines rest as part of contribution, not escape.`
+        },
+        { 
+            t: 'Aug', 
+            x: 44, y: 78, 
+            title: 'Creative Flow', 
+            desc: 'Keep ideas alive without fighting them', 
+            prompt: `Help me re‑awaken my creative side and design a 3‑month practice plan.
+
+Context:
+- My creative medium or expression: [writing, visuals, community facilitation, etc.]
+- When I feel blocked and when ideas flow: [describe both states]
+- Constraints I currently face: [time, confidence, perfectionism, etc.]
+
+Tasks for you:
+1. Build a 3‑month creative routine with weekly micro‑exercises.
+2. Include a "harvest folder" idea to collect small wins.
+3. Suggest one reflection question per month on creative energy.
+4. End with a gentle reminder that creativity follows curiosity, not pressure.`
+        },
+        { 
+            t: 'Sep', 
+            x: 56, y: 78, 
+            title: 'Project Clarity', 
+            desc: 'Find your way through mid‑year complexity', 
+            prompt: `Help me refocus our team/project goals for the next 3 months.
+
+Context:
+- Current project or mission: [describe clearly]
+- Main challenges or distractions: [list them]
+- What success might look like at year's end: [describe in plain language]
+
+Tasks for you:
+1. Create a 3‑month focus map with 3 priorities, 3 actions per month.
+2. Suggest a shared progress tracker template.
+3. Identify possible "letting‑go" points — tasks not serving the vision.
+4. Conclude with a nature analogy for direction (compass moss, migrating birds, etc.).`
+        },
+        { 
+            t: 'Oct', 
+            x: 74, y: 82, 
+            title: 'Harvest & Learning', 
+            desc: 'Pause to collect lessons before moving on', 
+            prompt: `Help me capture lessons and appreciate results from recent work before planning new things.
+
+Context:
+- Projects/events recently concluded: [describe briefly]
+- What worked surprisingly well: [list 2–3 points]
+- What I'd change next time: [list honestly]
+
+Tasks for you:
+1. Design a 3‑month learning reflection loop.
+2. Create a simple template for monthly insight notes.
+3. Suggest one creative way to share or visualize lessons with others.
+4. End with a reflection: "What truths am I carrying forward gently?"`
+        },
+        { 
+            t: 'Nov', 
+            x: 38, y: 95, 
+            title: 'Brave Experiments', 
+            desc: 'Test small changes with curiosity', 
+            prompt: `Help me test small, meaningful innovations within our scope of work over the next 3 months.
+
+Context:
+- New idea or method I want to test: [describe concept]
+- Why it feels both exciting and scary: [explain]
+- Available resources/time: [describe realistically]
+
+Tasks for you:
+1. Create a low‑risk 3‑month experiment plan with checkpoints.
+2. Suggest weekly reflection questions and documentation method.
+3. Include guidance on sharing learning without ego or fear.
+4. End with a nature metaphor about adaptability and change.`
+        },
+        { 
+            t: 'Dec', 
+            x: 50, y: 100, 
+            title: 'Gratitude Canopy', 
+            desc: 'End the cycle with reflection and appreciation', 
+            prompt: `Help me create a 3‑month gratitude and closure practice for the year.
+
+Context:
+- People or partners I'm thankful for: [list 5 names or roles]
+- What I'm proud of this year: [list 3 moments]
+- What I want to let go of peacefully: [describe in 1–2 lines]
+
+Tasks for you:
+1. Offer a structured plan for weekly gratitude notes or creative acts of thanks.
+2. Suggest a collective way to celebrate (digital reflection board, small ritual).
+3. Create a closing journal question for each month.
+4. End with a nature‑based closing line — canopy, snow, or starlight imagery — linking gratitude to renewal.`
+        }
     ];
 
-    // --- Snow Implementation ---
-    const canvas = document.getElementById('snow-canvas');
-    const ctx = canvas.getContext('2d');
-    let flakes = [];
-    function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    function createFlakes() {
-        flakes = Array.from({length: 150}, () => ({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            r: Math.random() * 2 + 1,
-            d: Math.random() * 1 + 0.5,
-            o: Math.random() * 0.5 + 0.3
-        }));
-    }
-    function draw() {
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = 'white';
-        flakes.forEach(f => {
-            ctx.globalAlpha = f.o;
-            ctx.beginPath();
-            ctx.arc(f.x, f.y, f.r, 0, Math.PI*2);
-            ctx.fill();
-            f.y += f.d; f.x += Math.sin(f.y / 50);
-            if(f.y > canvas.height) f.y = -10;
-        });
-        requestAnimationFrame(draw);
-    }
-    window.addEventListener('resize', resize);
-    resize(); createFlakes(); draw();
+    const container = document.getElementById('nodes-container');
+    const panel = document.getElementById('active-info');
+    const pTitle = document.getElementById('p-title');
+    const pDesc = document.getElementById('p-desc');
+    const pPreview = document.getElementById('p-preview');
+    const copyBtn = document.getElementById('copyBtn');
+    let currentPrompt = '';
 
-    // --- Interaction ---
-    function enterTree() {
-        document.getElementById('intro-block').style.display = 'none';
-        document.getElementById('tree-canvas').style.display = 'block';
-    }
-    function showIntro() {
-        document.getElementById('tree-canvas').style.display = 'none';
-        document.getElementById('intro-block').style.display = 'block';
-    }
-
-    // --- Generate Ornaments ---
-    const container = document.getElementById('ornaments-field');
-    data.forEach((p, i) => {
-        const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        g.setAttribute("class", "ornament-group");
-
-        // Visual Ornament
-        const v = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        v.setAttribute("class", "ornament-visual");
-        v.style.transformOrigin = `${p.x}px ${p.y}px`;
-
-        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        circle.setAttribute("cx", p.x); circle.setAttribute("cy", p.y);
-        circle.setAttribute("r", "12");
-        circle.setAttribute("fill", p.color);
-        circle.setAttribute("fill-opacity", "0.8");
+    data.forEach(item => {
+        const node = document.createElement('div');
+        node.className = 'node';
+        node.style.left = item.x + '%';
+        node.style.top = item.y + '%';
         
-        // Glass Reflection
-        const refl = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        refl.setAttribute("cx", p.x-4); refl.setAttribute("cy", p.y-4);
-        refl.setAttribute("r", "4"); refl.setAttribute("fill", "white");
-        refl.setAttribute("fill-opacity", "0.3");
-
-        // Glimpse Label
-        const label = document.createElementNS("http://www.w3.org/2000/svg", "g");
-        label.setAttribute("class", "glimpse-label");
-        const lRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        lRect.setAttribute("x", p.x-60); lRect.setAttribute("y", p.y-45);
-        lRect.setAttribute("width", "120"); lRect.setAttribute("height", "24");
-        lRect.setAttribute("rx", "12"); lRect.setAttribute("fill", "rgba(0,0,0,0.8)");
-        const lTxt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        lTxt.setAttribute("x", p.x); lTxt.setAttribute("y", p.y-29);
-        lTxt.setAttribute("text-anchor", "middle"); lTxt.setAttribute("fill", "white");
-        lTxt.setAttribute("font-size", "10"); lTxt.setAttribute("font-weight", "700");
-        lTxt.textContent = p.title;
-
-        // HIT AREA (Crucial for smooth hover)
-        const hit = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-        hit.setAttribute("cx", p.x); hit.setAttribute("cy", p.y);
-        hit.setAttribute("r", "25"); // Larger hit area for stability
-        hit.setAttribute("class", "ornament-hit-area");
-        hit.onclick = () => openModal(p);
-
-        v.appendChild(circle); v.appendChild(refl);
-        label.appendChild(lRect); label.appendChild(lTxt);
-        g.appendChild(v); g.appendChild(label); g.appendChild(hit);
-        container.appendChild(g);
+        node.innerHTML = `<div class="node-label">${item.t}</div>`;
+        
+        node.onmouseenter = () => {
+            pTitle.textContent = item.title;
+            pDesc.textContent = item.desc;
+            pPreview.textContent = 'Copy the full prompt → paste into ChatGPT → fill placeholders → get your 3-month plan';
+            currentPrompt = item.prompt;
+            panel.style.display = 'block';
+        };
+        
+        container.appendChild(node);
     });
 
-    // --- Modal ---
-    const modal = document.getElementById('modal');
-    function openModal(item) {
-        document.getElementById('m-title').textContent = item.title;
-        document.getElementById('m-desc').textContent = item.desc;
-        document.getElementById('m-prompt').textContent = item.prompt;
-        modal.style.display = 'flex';
-    }
-    function closeModal() { modal.style.display = 'none'; }
-    window.onclick = (e) => { if(e.target == modal) closeModal(); }
-
-    document.getElementById('copy-btn').onclick = function() {
-        const text = document.getElementById('m-prompt').textContent;
-        const el = document.createElement('textarea');
-        el.value = text; document.body.appendChild(el);
-        el.select(); document.execCommand('copy');
-        document.body.removeChild(el);
-        this.textContent = "Copied! ✨";
-        setTimeout(() => this.textContent = "Copy to your journal", 2000);
-    }
+    copyBtn.onclick = () => {
+        navigator.clipboard.writeText(currentPrompt).then(() => {
+            const originalText = copyBtn.textContent;
+            copyBtn.textContent = 'Copied! ✨';
+            copyBtn.style.background = '#f9f7f2';
+            setTimeout(() => {
+                copyBtn.textContent = originalText;
+                copyBtn.style.background = var(--accent);
+            }, 2000);
+        });
+    };
 </script>
+
 </body>
 </html>

@@ -1,1 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EKOLiTiKA Holiday Tree | 2026 Growth Ornaments</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #1a237e;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .snowflake {
+            position: absolute;
+            color: #e3f2fd;
+            font-size: 20px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .story-section {
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .story-title {
+            font-size: 3.2em;
+            font-weight: normal;
+            margin-bottom: 30px;
+            color: #0d47a1;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+        }
+
+        .story-text {
+            font-size: 1.4em;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            color: #1565c0;
+        }
+
+        .story-step {
+            opacity: 0.3;
+            transition: all 0.6s ease;
+            cursor: pointer;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        .story-step.active {
+            opacity: 1;
+            background: rgba(255,255,255,0.9);
+            transform: scale(1.05);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .tree-section {
+            display: none;
+            text-align: center;
+            padding: 80px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .tree-container {
+            position: relative;
+            display: inline-block;
+            margin: 40px 0;
+        }
+
+        .tree-trunk {
+            width: 40px;
+            height: 120px;
+            background: linear-gradient(180deg, #4a4a4a, #2c2c2c);
+            margin: 0 auto;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .tree-shape {
+            width: 0;
+            height: 0;
+            border-left: 200px solid transparent;
+            border-right: 200px solid transparent;
+            border-bottom: 300px solid #2e7d32;
+            position: relative;
+            margin: 0 auto;
+            filter: drop-shadow(0 20px 40px rgba(46,125,50,0.3));
+        }
+
+        .ornament {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, #e1f5fe 0%, #b3e5fc 70%, #81d4fa 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid rgba(255,255,255,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: #0277bd;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .ornament:hover {
+            transform: scale(1.2) rotate(10deg);
+            box-shadow: 0 15px 40px rgba(129,212,250,0.6);
+            z-index: 10;
+        }
+
+        .ornament:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(13,71,161,0.95);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            white-space: nowrap;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 20;
+            pointer-events: none;
+            max-width: 300px;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 100;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            padding: 40px;
+            border-radius: 25px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+
+        .close {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .prompt-text {
+            background: #f5faff;
+            border: 2px dashed #81d4fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            position: relative;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #0277bd, #1565c0);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(2,119,189,0.4);
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(2,119,189,0.6);
+        }
+
+        .copy-btn.copied {
+            background: #4caf50;
+        }
+
+        .ekolitika-footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #1565c0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .story-title {
+                font-size: 2.2em;
+            }
+            .story-text {
+                font-size: 1.2em;
+            }
+            .tree-shape {
+                border-left-width: 150px;
+                border-right-width: 150px;
+                border-bottom-width: 220px;
+            }
+            .ornament {
+                width: 40px;
+                height: 40px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="snow" id="snow"></div>
+
+    <div class="container">
+        <!-- Story Section -->
+        <section class="story-section" id="story">
+            <h1 class="story-title">A Tree Takes Shape</h1>
+            <div class="story-text">
+                <div class="story-step active" data-step="0">
+                    Beneath winter's quiet snow, roots remember what matters most.
+                </div>
+                <div class="story-step" data-step="1">
+                    A trunk rises steady, finding rhythm between work and breath.
+                </div>
+                <div class="story-step" data-step="2">
+                    Branches reach toward others, weaving quiet strength together.
+                </div>
+                <div class="story-step" data-step="3">
+                    Ornaments glow softly — invitations to grow through 2026.
+            </div>
+        </section>
+
+        <!-- Tree Section -->
+        <section class="tree-section" id="tree">
+            <h2 style="font-size: 2.5em; margin-bottom: 20px; color: #0d47a1;">Click an ornament to grow</h2>
+            <div class="tree-container">
+                <div class="tree-trunk"></div>
+                <div class="tree-shape" id="treeShape"></div>
+            </div>
+        </section>
+
+        <footer class="ekolitika-footer">
+            Made with care by EKOLiTiKA • Skopje • Free tool for gentle growth
+        </footer>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody">
+                <!-- Dynamic content -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Snowflake animation
+        function createSnowflakes() {
+            const snow = document.getElementById('snow');
+            for (let i = 0; i < 100; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.innerHTML = '❄';
+                flake.style.left = Math.random() * 100 + '%';
+                flake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                flake.style.animationDelay = Math.random() * 2 + 's';
+                flake.style.opacity = Math.random();
+                flake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                snow.appendChild(flake);
+
+                setTimeout(() => {
+                    flake.remove();
+                }, 10000);
+            }
+        }
+        setInterval(createSnowflakes, 3000);
+
+        // Story progression
+        const storySteps = document.querySelectorAll('.story-step');
+        let currentStep = 0;
+
+        storySteps.forEach((step, index) => {
+            step.addEventListener('click', () => {
+                storySteps[currentStep].classList.remove('active');
+                currentStep = index;
+                storySteps[currentStep].classList.add('active');
+                
+                if (currentStep === 3) {
+                    setTimeout(() => {
+                        document.getElementById('story').style.display = 'none';
+                        document.getElementById('tree').style.display = 'block';
+                    }, 1000);
+                }
+            });
+        });
+
+        // Ornaments data
+        const ornaments = [
+            { month: 'Jan', title: 'Roots of Purpose', tooltip: 'Reconnect with why you do what you do', top: '20%', left: '20%', prompt: `Help me reconnect with my purpose in [describe your NGO/project]. I want to clarify what values guide my choices and how I can use them to decide better in the next 3 months. Create a plan with 3 focus areas, small habits to keep alignment, and a simple weekly reflection format.` },
+            { month: 'Feb', title: 'Flow & Balance', tooltip: 'Find rhythm between giving and resting', top: '15%', left: '45%', prompt: `I often [describe your current work rhythm]. Help me design a balanced 3‑month routine inspired by nature's cycles (rest, grow, bloom, release). Include weekly goals for energy, rest, and creativity, and a reflection guide to see if balance improves.` },
+            { month: 'Mar', title: 'Collaboration Seeds', tooltip: 'Nurture partnerships that feel alive', top: '25%', left: '60%', prompt: `In my role as [your role], I work with [describe your usual collaborators]. Help me build a 3‑month plan to deepen trust and collaboration — with actions, small rituals, and a way to record mutual learning moments.` },
+            { month: 'Apr', title: 'Storytelling Roots', tooltip: 'Tell living stories instead of reports', top: '35%', left: '15%', prompt: `Our team or project [describe one ongoing activity]. Help me turn these experiences into small, honest stories that touch people. Create a 3‑month storytelling plan with formats, voice tone, and ways to track story impact (comments, reactions, reused stories).` },
+            { month: 'May', title: 'Digital Garden', tooltip: 'Use simple tools that actually serve', top: '30%', left: '35%', prompt: `Help me map and improve our digital tools for [NGO/project name]. I'll describe what we use ([tools list]). Suggest practical ways to simplify or connect them, 3‑month micro‑goals, and a method to record what worked and what didn't.` },
+            { month: 'Jun', title: 'Spark of Community', tooltip: 'Rekindle genuine bonds with those you serve', top: '40%', left: '55%', prompt: `Our community is made of [describe the group]. Help me design a light 3‑month engagement plan that strengthens connection, nurtures two‑way exchange, and shows visible traces of growth (stories, photos, feedback).` },
+            { month: 'Jul', title: 'Creative Flow', tooltip: 'Let creativity become part of routine', top: '50%', left: '25%', prompt: `I often feel [describe your creative state]. Help me build a playful 3‑month creative routine using short, simple practices and ways to track which ideas start to flow naturally over time.` },
+            { month: 'Aug', title: 'Care & Renewal', tooltip: 'Refill instead of burn out', top: '45%', left: '70%', prompt: `I've been feeling [describe your current energy]. Help me design a 3‑month self‑care rhythm that aligns with my real workload and inner seasons, with weekly reflection questions to check how rested I feel.` },
+            { month: 'Sep', title: 'Project Clarity', tooltip: 'Rebuild structure before busy season', top: '60%', left: '40%', prompt: `Our project or team is currently [describe status]. Help me create a 3‑month focus map—priorities, next small wins, and a simple progress‑tracking system (like a growing leaf or checklist).` },
+            { month: 'Oct', title: 'Harvest & Learning', tooltip: 'Gather results before rushing forward', top: '65%', left: '60%', prompt: `We've completed [describe past projects or events]. Help me create a 3‑month reflection loop to collect lessons, re‑use what's valuable, and share learnings through a simple recap log or circle format.` },
+            { month: 'Nov', title: 'Brave Experiments', tooltip: 'Dare to test new methods and keep notes', top: '75%', left: '20%', prompt: `I want to try [describe innovation or idea]. Help me shape a 3‑month experimentation plan with a low‑risk start, weekly reflection points, and a visible learning record (photos, check‑ins, changes made).` },
+            { month: 'Dec', title: 'Gratitude Canopy', tooltip: 'End the cycle with gratitude and celebration', top: '80%', left: '50%', prompt: `Guide me through a 3‑month gratitude cycle for my team and collaborators. Suggest weekly reflection tasks, ways to express appreciation, and a creative output (thank‑you story, artwork, or collective card).` }
+        ];
+
+        // Create ornaments
+        const treeShape = document.getElementById('treeShape');
+        ornaments.forEach((ornament, index) => {
+            const el = document.createElement('div');
+            el.className = 'ornament';
+            el.style.top = ornament.top;
+            el.style.left = ornament.left;
+            el.textContent = ornament.month;
+            el.dataset.index = index;
+            el.dataset.tooltip = ornament.tooltip;
+            treeShape.appendChild(el);
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modalBody');
+        const closeBtn = document.querySelector('.close');
+
+        document.querySelectorAll('.ornament').forEach(ornament => {
+            ornament.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const index = parseInt(ornament.dataset.index);
+                const data = ornaments[index];
+                
+                modalBody.innerHTML = `
+                    <h3 style="color: #0d47a1; margin-bottom: 20px;">${data.title}</h3>
+                    <p style="margin-bottom: 20px; color: #1565c0;">${data.tooltip}</p>
+                    <div class="prompt-text">${data.prompt}</div>
+                    <button class="copy-btn" data-prompt="${data.prompt.replace(/"/g, '&quot;')}">Copy Prompt for AI</button>
+                `;
+                
+                modal.style.display = 'block';
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Copy functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('copy-btn')) {
+                const prompt = e.target.dataset.prompt;
+                navigator.clipboard.writeText(prompt).then(() => {
+                    e.target.textContent = 'Copied! ✨';
+                    e.target.classList.add('copied');
+                    setTimeout(() => {
+                        e.target.textContent = 'Copy Prompt for AI';
+                        e.target.classList.remove('copied');
+                    }, 2000);
+                });
+            }
+        });
+
+        // Prevent modal close on content click
+        document.querySelector('.modal-content').addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    </script>
+</body>
+</html>
 

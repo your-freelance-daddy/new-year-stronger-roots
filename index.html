@@ -76,6 +76,7 @@ html,body{
   align-items:center;
   justify-content:center;
   z-index:10;
+    transition:opacity .7s ease;
 }
 .story-card{
   width:min(520px,90%);
@@ -359,7 +360,6 @@ nextBtn.onclick=()=>{
 /* =========================
    PROMPTS (unchanged placeholders)
    ========================= */
-const prompts=[
 const PROMPTS = [
 {
   title: "Roots of Purpose",
@@ -624,7 +624,7 @@ prompts.forEach((t,i)=>{
   o.className="ornament";
   o.style.top=positions[i][0]+"%";
   o.style.left=positions[i][1]+"%";
-  o.dataset.title=t;
+  o.dataset.title==PROMPTS[i].title;
 o.onclick = () => {
   openModal(PROMPTS[i]);
 };

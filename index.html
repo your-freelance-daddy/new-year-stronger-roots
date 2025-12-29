@@ -7,562 +7,468 @@
 
 <style>
 /* =========================================================
-   DESIGN TOKENS – adjust overall look here
+   DESIGN SYSTEM — calm, cinematic winter night
    ========================================================= */
-:root {
-  --night-1: #060b1c;
-  --night-2: #0a1530;
-  --night-3: #12214a;
-  --moon-glow: rgba(220,230,255,0.18);
+:root{
+  --bg-deep:#040816;
+  --bg-mid:#08132b;
+  --glass:rgba(6,10,28,0.82);
+  --text-main:#f4f7ff;
+  --text-soft:#cfd6ff;
+  --accent-green:#6fb89c;
+  --accent-gold:#f5c77a;
+}
 
-  --text-main: #f4f7ff;
-  --text-soft: #cfd6ff;
-
-  --forest-deep: #0b2a1f;
-  --forest-mid: #143d2d;
-
-  --ornament-light: #e9f6ff;
-  --ornament-shadow: rgba(0,0,0,0.4);
-
-  --modal-bg: rgba(10,15,35,0.9);
+*{box-sizing:border-box}
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;
+  color:var(--text-main);
+  background:radial-gradient(circle at top,var(--bg-mid),var(--bg-deep));
 }
 
 /* =========================================================
-   BASE
+   BACKGROUND — inspired by provided image
    ========================================================= */
-* { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: radial-gradient(circle at top, var(--night-3), var(--night-1));
-  color: var(--text-main);
-  overflow: hidden; /* one screen only */
-}
-
-button {
-  font-family: inherit;
-  cursor: pointer;
-}
-
-/* =========================================================
-   LAYOUT WRAPPER – everything on one screen
-   ========================================================= */
-#app {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-/* =========================================================
-   INTRO CARDS (CENTERED OVER EVERYTHING)
-   ========================================================= */
-#intro {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 5;
-}
-
-.story-card {
-  width: min(520px, 90%);
-  background: rgba(15, 25, 55, 0.85);
-  backdrop-filter: blur(8px);
-  border-radius: 20px;
-  padding: 32px 28px 24px;
-  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
-  text-align: center;
-  animation: cardIn 0.6s ease;
-}
-
-.story-card p {
-  font-size: 1.05rem;
-  line-height: 1.6;
-  color: var(--text-soft);
-}
-
-.card-nav {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 26px;
-}
-
-.card-nav button {
-  background: transparent;
-  border: 1px solid var(--text-soft);
-  color: var(--text-main);
-  padding: 8px 18px;
-  border-radius: 999px;
-  font-size: 0.9rem;
-}
-
-.card-nav button:disabled {
-  opacity: 0.3;
-  cursor: default;
-}
-
-.enter-btn {
-  border-color: #8fd3b6;
-  color: #eafff4;
-}
-
-/* =========================================================
-   FOREST SCENE – hidden until intro ends
-   ========================================================= */
-#scene {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 1.2s ease;
-}
-
-/* reveal after intro */
-#scene.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* =========================================================
-   SKY & MOON
-   ========================================================= */
-.sky {
-  position: absolute;
-  inset: 0;
+.forest-bg{
+  position:fixed;
+  inset:0;
   background:
-    radial-gradient(circle at 70% 20%, var(--moon-glow), transparent 55%),
-    linear-gradient(180deg, var(--night-3), var(--night-1));
+    linear-gradient(to top, rgba(4,8,22,.85), rgba(4,8,22,.4)),
+    url("/mnt/data/depositphotos_436980852-stock-photo-night-winter-forest-fantasy-landscape.jpg");
+  background-size:cover;
+  background-position:center;
+  filter:contrast(1.1) brightness(.85);
+  z-index:1;
 }
-
-.moon {
-  position: absolute;
-  top: 8%;
-  right: 12%;
-  width: 140px;
-  height: 140px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #ffffff, #cfd8ff 60%);
-  box-shadow: 0 0 60px rgba(220,230,255,0.35);
-  opacity: 0.9;
-}
-
-/* =========================================================
-   DISTANT FOREST (SILHOUETTES)
-   ========================================================= */
-.forest-back {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 45%;
-  background:
-    linear-gradient(to top,
-      rgba(5,15,25,0.95),
-      rgba(5,15,25,0.6),
-      transparent
-    );
-}
-
-.forest-back::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(
-      -60deg,
-      rgba(10,40,30,0.9) 0 40px,
-      rgba(10,40,30,0.7) 40px 80px
-    );
-  opacity: 0.25;
+.mist{
+  position:fixed;
+  bottom:-10%;
+  left:0;
+  width:100%;
+  height:40%;
+  background:radial-gradient(ellipse at center,rgba(255,255,255,.12),transparent 70%);
+  z-index:2;
+  pointer-events:none;
 }
 
 /* =========================================================
-   LOGO
+   SNOW (canvas)
    ========================================================= */
-.logo {
-  position: absolute;
-  top: 22px;
-  width: 100%;
-  text-align: center;
-  z-index: 3;
-}
-.logo a {
-  color: var(--text-main);
-  text-decoration: none;
-  letter-spacing: 1px;
-  font-weight: 600;
-}
-/* Replace text with image when ready:
-   <img src="YOUR_LOGO.png" alt="EKOLiTiKA logo">
-*/
-
-/* =========================================================
-   TREE – more realistic via layered gradients
-   ========================================================= */
-.tree-container {
-  position: absolute;
-  left: 50%;
-  bottom: 6%;
-  transform: translateX(-50%);
-  width: min(340px, 80vw);
-  height: 70%;
-  z-index: 2;
-}
-
-.tree {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 100%;
-}
-
-/* layered branches */
-.branch {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  height: 28%;
-  background: radial-gradient(
-    ellipse at center,
-    #2e7a5a,
-    #184534 70%
-  );
-  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
-  filter: drop-shadow(0 10px 12px rgba(0,0,0,0.4));
-}
-
-.branch.b1 { top: 0; width: 90%; }
-.branch.b2 { top: 18%; width: 80%; }
-.branch.b3 { top: 36%; width: 70%; }
-.branch.b4 { top: 54%; width: 60%; }
-
-/* trunk */
-.trunk {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 34px;
-  height: 60px;
-  background: linear-gradient(#3a2a1a, #2a1d12);
-  border-radius: 6px;
+#snow{
+  position:fixed;
+  inset:0;
+  z-index:3;
+  pointer-events:none;
 }
 
 /* =========================================================
-   ORNAMENTS – glass-like
+   INTRO CARDS — only visible at start
    ========================================================= */
-.ornament {
-  position: absolute;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 30% 30%, #ffffff, #bfe8d5 55%, #6fae92 100%);
+#intro{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:10;
+}
+.story-card{
+  width:min(520px,90%);
+  background:var(--glass);
+  backdrop-filter:blur(10px);
+  border-radius:22px;
+  padding:34px 30px 26px;
+  box-shadow:0 30px 90px rgba(0,0,0,.6);
+  text-align:center;
+  animation:fadeUp .7s ease;
+}
+.story-card p{
+  font-size:1.05rem;
+  line-height:1.6;
+  color:var(--text-soft);
+}
+.card-nav{
+  display:flex;
+  justify-content:space-between;
+  margin-top:26px;
+}
+.card-nav button{
+  border-radius:999px;
+  padding:10px 22px;
+  border:1px solid var(--text-soft);
+  background:transparent;
+  color:var(--text-main);
+  font-size:.9rem;
+}
+.card-nav button.primary{
+  border-color:var(--accent-green);
+  color:#eafff4;
+}
+.card-nav button:disabled{opacity:.3}
+
+/* =========================================================
+   MAIN SCENE — hidden until intro ends
+   ========================================================= */
+#scene{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 1.4s ease;
+  z-index:5;
+}
+#scene.visible{
+  opacity:1;
+  pointer-events:auto;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.header{
+  position:absolute;
+  top:22px;
+  width:100%;
+  text-align:center;
+  z-index:6;
+}
+.header a{
+  color:var(--text-main);
+  text-decoration:none;
+  letter-spacing:2px;
+  font-weight:500;
+}
+.header p{
+  margin-top:6px;
+  font-size:.85rem;
+  color:var(--text-soft);
+}
+
+/* =========================================================
+   TREE — layered + glow for realism
+   ========================================================= */
+.tree-wrap{
+  position:absolute;
+  left:50%;
+  bottom:8%;
+  transform:translateX(-50%);
+  width:min(420px,85vw);
+  height:72%;
+  z-index:6;
+}
+.tree{
+  position:absolute;
+  inset:0;
+  filter:drop-shadow(0 30px 50px rgba(0,0,0,.7));
+}
+.branch{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  height:26%;
+  background:radial-gradient(ellipse at center,#2f8a64,#123c2c 70%);
+  clip-path:polygon(50% 0%,100% 100%,0% 100%);
+}
+.branch.b1{top:0;width:92%}
+.branch.b2{top:18%;width:82%}
+.branch.b3{top:36%;width:72%}
+.branch.b4{top:54%;width:62%}
+.trunk{
+  position:absolute;
+  bottom:-4px;
+  left:50%;
+  transform:translateX(-50%);
+  width:36px;
+  height:60px;
+  background:linear-gradient(#3a2a1a,#22160e);
+  border-radius:8px;
+}
+
+/* =========================================================
+   ORNAMENTS — glass realism
+   ========================================================= */
+.ornament{
+  position:absolute;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  cursor:pointer;
   box-shadow:
-    inset -2px -4px 6px rgba(0,0,0,0.25),
-    0 6px 12px var(--ornament-shadow);
-  cursor: pointer;
+    inset -2px -3px 6px rgba(0,0,0,.35),
+    inset 2px 2px 6px rgba(255,255,255,.7),
+    0 0 18px rgba(255,255,255,.45);
+  transition:transform .35s ease;
 }
-
-.ornament::after {
-  content: "";
-  position: absolute;
-  top: -6px;
-  left: 50%;
-  width: 2px;
-  height: 6px;
-  background: #ccc;
-  transform: translateX(-50%);
+.ornament.green{
+  background:radial-gradient(circle at 30% 30%,#fff,#8fd3b6 60%,#2f6b4f 100%);
 }
-
-.ornament:hover::before {
-  content: attr(data-title);
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.75);
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  white-space: nowrap;
+.ornament.gold{
+  background:radial-gradient(circle at 30% 30%,#fff,#f7d58a 60%,#9a6a1f 100%);
 }
-
-/* =========================================================
-   INTRO TEXT UNDER LOGO
-   ========================================================= */
-.scene-intro {
-  position: absolute;
-  top: 70px;
-  width: 100%;
-  text-align: center;
-  font-size: 0.9rem;
-  color: var(--text-soft);
-  z-index: 3;
+.ornament:hover{transform:scale(1.8);z-index:20}
+.ornament::after{
+  content:attr(data-title);
+  position:absolute;
+  top:-34px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.75);
+  padding:5px 10px;
+  border-radius:8px;
+  font-size:.7rem;
+  white-space:nowrap;
+  opacity:0;
+  transition:.2s;
 }
+.ornament:hover::after{opacity:1}
 
 /* =========================================================
-   MODAL
+   MODAL (prompt cards reused & improved)
    ========================================================= */
-.modal-overlay {
-  display: none;
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 6;
-  align-items: center;
-  justify-content: center;
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.55);
+  backdrop-filter:blur(8px);
+  z-index:50;
+}
+.modal-box{
+  width:min(720px,92%);
+  max-height:82%;
+  overflow:auto;
+  background:var(--glass);
+  border-radius:24px;
+  padding:32px;
+  box-shadow:0 40px 120px rgba(0,0,0,.7);
+  position:relative;
+}
+.modal h2{margin-top:0}
+.modal pre{
+  white-space:pre-wrap;
+  font-size:.85rem;
+  color:var(--text-soft);
+  background:rgba(0,0,0,.35);
+  padding:18px;
+  border-radius:14px;
+  border-left:4px solid var(--accent-green);
+}
+.close{
+  position:absolute;
+  top:16px;
+  right:20px;
+  font-size:1.2rem;
+  cursor:pointer;
+}
+.copy-btn{
+  margin-top:16px;
+  border-radius:999px;
+  padding:12px 26px;
+  border:none;
+  background:var(--accent-green);
+  color:#052017;
+  font-weight:600;
+}
+.copy-status{
+  margin-top:8px;
+  font-size:.75rem;
+  color:var(--accent-green);
+  height:1em;
 }
 
-.modal {
-  width: min(720px, 92%);
-  max-height: 80%;
-  overflow-y: auto;
-  background: var(--modal-bg);
-  border-radius: 20px;
-  padding: 28px;
-  position: relative;
-}
-
-.modal h2 {
-  margin-top: 0;
-}
-
-.modal pre {
-  white-space: pre-wrap;
-  font-size: 0.85rem;
-  color: var(--text-soft);
-}
-
-.close-btn {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  font-size: 1.2rem;
-  cursor: pointer;
-}
-
-.copy-btn {
-  margin-top: 16px;
-  padding: 10px 18px;
-  border-radius: 999px;
-  border: none;
-  background: #6fb89c;
-  color: #052017;
-}
-
-.copy-status {
-  margin-top: 8px;
-  font-size: 0.75rem;
-  height: 1em;
-}
-
-/* =========================================================
-   SNOW
-   ========================================================= */
-.snowflake {
-  position: absolute;
-  top: -10px;
-  color: white;
-  opacity: 0.75;
-  pointer-events: none;
-  animation: fall linear infinite;
-  z-index: 4;
-}
-
-@keyframes fall {
-  to { transform: translateY(110vh); }
-}
-
-@keyframes cardIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* ========================================================= */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
 }
 </style>
 </head>
 
 <body>
-<div id="app">
 
-  <!-- INTRO -->
-  <div id="intro">
-    <div class="story-card">
-      <p id="storyText"></p>
-      <div class="card-nav">
-        <button id="backBtn">Back</button>
-        <button id="nextBtn">Next</button>
-      </div>
+<div class="forest-bg"></div>
+<div class="mist"></div>
+<canvas id="snow"></canvas>
+
+<!-- INTRO -->
+<div id="intro">
+  <div class="story-card">
+    <p id="storyText"></p>
+    <div class="card-nav">
+      <button id="backBtn">Back</button>
+      <button id="nextBtn" class="primary">Next</button>
     </div>
   </div>
+</div>
 
-  <!-- FOREST SCENE -->
-  <div id="scene">
-    <div class="sky"></div>
-    <div class="moon"></div>
-
-    <div class="logo">
-      <a href="https://ekolitika.framer.website" target="_blank">EKOLiTiKA</a>
-    </div>
-
-    <div class="scene-intro">
-      Click an ornament to get a ready-to-copy AI prompt for your next growth season.
-    </div>
-
-    <div class="tree-container">
-      <div class="tree" id="tree">
-        <div class="branch b1"></div>
-        <div class="branch b2"></div>
-        <div class="branch b3"></div>
-        <div class="branch b4"></div>
-      </div>
-      <div class="trunk"></div>
-    </div>
-
-    <div class="forest-back"></div>
+<!-- MAIN SCENE -->
+<div id="scene">
+  <div class="header">
+    <a href="https://ekolitika.framer.website" target="_blank">EKOLiTiKA</a>
+    <p>Click an ornament to receive a ready-to-copy AI prompt</p>
   </div>
 
-  <!-- MODAL -->
-  <div class="modal-overlay" id="modalOverlay">
-    <div class="modal">
-      <div class="close-btn" id="closeModal">×</div>
-      <h2 id="modalTitle"></h2>
-      <pre id="modalContent"></pre>
-      <button class="copy-btn" id="copyBtn">Copy prompt</button>
-      <div class="copy-status" id="copyStatus"></div>
+  <div class="tree-wrap">
+    <div class="tree" id="tree">
+      <div class="branch b1"></div>
+      <div class="branch b2"></div>
+      <div class="branch b3"></div>
+      <div class="branch b4"></div>
     </div>
+    <div class="trunk"></div>
   </div>
+</div>
 
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <div class="close" onclick="closeModal()">×</div>
+    <h2 id="mTitle"></h2>
+    <pre id="mText"></pre>
+    <button class="copy-btn" onclick="copyPrompt()">Copy prompt</button>
+    <div class="copy-status" id="copyStatus"></div>
+  </div>
 </div>
 
 <script>
 /* =========================================================
-   INTRO STORY LOGIC
+   INTRO LOGIC
    ========================================================= */
-const stories = [
-  "This year, we chose regeneration over resolutions. Less pushing. More listening. More care for what’s already here.",
-  "This space is our winter gift to you. Not a plan to follow, but a pause—to breathe, reflect, and reset in your own way.",
-  "Nature reminds us that growth is quiet before it is visible. The ornaments are invitations, not instructions—small starting points for whatever season you’re in.",
-  "Everything here is free, private, and pressure-free. When you’re ready, step into the forest and let one ornament lead the way."
+const stories=[
+"This year, we chose regeneration over resolutions. Less pushing. More listening. More care for what’s already here.",
+"This space is our winter gift to you. Not a plan to follow, but a pause—to breathe, reflect, and reset in your own way.",
+"Nature reminds us that growth is quiet before it is visible. The ornaments are invitations, not instructions—small starting points for whatever season you’re in.",
+"Everything here is free, private, and pressure-free. When you’re ready, step into the forest and let one ornament lead the way."
 ];
-
-let index = 0;
-const storyText = document.getElementById("storyText");
-const backBtn = document.getElementById("backBtn");
-const nextBtn = document.getElementById("nextBtn");
-const intro = document.getElementById("intro");
-const scene = document.getElementById("scene");
-
-function renderStory() {
-  storyText.textContent = stories[index];
-  backBtn.disabled = index === 0;
-  nextBtn.textContent = index === stories.length - 1
-    ? "Enter the winter forest"
-    : "Next";
+let s=0;
+const storyText=document.getElementById("storyText");
+const backBtn=document.getElementById("backBtn");
+const nextBtn=document.getElementById("nextBtn");
+function renderStory(){
+  storyText.textContent=stories[s];
+  backBtn.disabled=s===0;
+  nextBtn.textContent=s===stories.length-1?"Enter the winter forest":"Next";
 }
 renderStory();
-
-backBtn.onclick = () => {
-  if (index > 0) index--;
-  renderStory();
-};
-
-nextBtn.onclick = () => {
-  if (index < stories.length - 1) {
-    index++;
-    renderStory();
-  } else {
-    intro.style.opacity = "0";
-    setTimeout(() => {
-      intro.style.display = "none";
-      scene.classList.add("visible");
-    }, 600);
+backBtn.onclick=()=>{if(s>0){s--;renderStory();}};
+nextBtn.onclick=()=>{
+  if(s<stories.length-1){s++;renderStory();}
+  else{
+    document.getElementById("intro").style.opacity="0";
+    setTimeout(()=>{
+      document.getElementById("intro").style.display="none";
+      document.getElementById("scene").classList.add("visible");
+    },700);
   }
 };
 
 /* =========================================================
-   ORNAMENT DATA & CREATION
-   Change positions here for fine-tuning layout
+   PROMPTS (replace with full texts if needed)
    ========================================================= */
-const ornaments = [
-  { title: "Roots of Purpose", prompt: "..." },
-  { title: "Flow & Balance", prompt: "..." },
-  { title: "Collaboration Seeds", prompt: "..." },
-  { title: "Story Harvest", prompt: "..." },
-  { title: "Digital Garden", prompt: "..." },
-  { title: "Shared Light", prompt: "..." },
-  { title: "Care & Renewal", prompt: "..." },
-  { title: "Creative Flow", prompt: "..." },
-  { title: "Project Clarity", prompt: "..." },
-  { title: "Harvest & Learning", prompt: "..." },
-  { title: "Brave Experiments", prompt: "..." },
-  { title: "Gratitude Canopy", prompt: "..." }
+const prompts=[
+{t:"Roots of Purpose",p:"Like roots growing unseen beneath winter soil, purpose becomes clear when you slow down enough to listen...\n\n[full prompt text here]"},
+{t:"Flow & Balance",p:"Think of work as a river...\n\n[full prompt text here]"},
+{t:"Collaboration Seeds",p:"Some collaborations grow like seeds...\n\n[full prompt text here]"},
+{t:"Story Harvest",p:"Before winter, forests gather what matters...\n\n[full prompt text here]"},
+{t:"Digital Garden",p:"Digital spaces thrive when treated like gardens...\n\n[full prompt text here]"},
+{t:"Shared Light",p:"Light travels best when it is shared...\n\n[full prompt text here]"},
+{t:"Care & Renewal",p:"Nothing regenerates without rest...\n\n[full prompt text here]"},
+{t:"Creative Flow",p:"Creativity returns when it feels safe to play...\n\n[full prompt text here]"},
+{t:"Project Clarity",p:"Clear paths reduce fear...\n\n[full prompt text here]"},
+{t:"Harvest & Learning",p:"Learning happens when the season is consciously closed...\n\n[full prompt text here]"},
+{t:"Brave Experiments",p:"Small experiments leave footprints...\n\n[full prompt text here]"},
+{t:"Gratitude Canopy",p:"Gratitude creates shelter...\n\n[full prompt text here]"}
 ];
 
-const tree = document.getElementById("tree");
-
-ornaments.forEach((o, i) => {
-  const el = document.createElement("div");
-  el.className = "ornament";
-  el.dataset.title = o.title;
-
-  /* Positioning relative to tree */
-  el.style.top = (80 + i * 24) + "px";
-  el.style.left = (120 + (i % 3) * 40) + "px";
-
-  el.onclick = () => openModal(o.title, o.prompt);
+/* =========================================================
+   ORNAMENT CREATION
+   ========================================================= */
+const tree=document.getElementById("tree");
+const positions=[
+[14,48],[22,38],[30,56],[38,44],[46,60],[52,34],
+[58,50],[64,30],[68,56],[72,44],[76,62],[80,40]
+];
+prompts.forEach((o,i)=>{
+  const el=document.createElement("div");
+  el.className="ornament "+(i%2?"green":"gold");
+  el.style.top=positions[i][0]+"%";
+  el.style.left=positions[i][1]+"%";
+  el.dataset.title=o.t;
+  el.onclick=()=>openModal(o);
   tree.appendChild(el);
 });
 
 /* =========================================================
    MODAL
    ========================================================= */
-const modalOverlay = document.getElementById("modalOverlay");
-const modalTitle = document.getElementById("modalTitle");
-const modalContent = document.getElementById("modalContent");
-const copyBtn = document.getElementById("copyBtn");
-const copyStatus = document.getElementById("copyStatus");
-
-document.getElementById("closeModal").onclick = closeModal;
-modalOverlay.onclick = e => { if (e.target === modalOverlay) closeModal(); };
-
-function openModal(title, content) {
-  modalTitle.textContent = title;
-  modalContent.textContent = content;
-  modalOverlay.style.display = "flex";
+const modal=document.getElementById("modal");
+function openModal(d){
+  document.getElementById("mTitle").textContent=d.t;
+  document.getElementById("mText").textContent=d.p;
+  modal.style.display="flex";
 }
-
-function closeModal() {
-  modalOverlay.style.display = "none";
-  copyStatus.textContent = "";
+function closeModal(){
+  modal.style.display="none";
+  document.getElementById("copyStatus").textContent="";
 }
-
-copyBtn.onclick = () => {
-  navigator.clipboard.writeText(modalContent.textContent).then(() => {
-    copyStatus.textContent = "Copied!";
-    setTimeout(() => copyStatus.textContent = "", 1500);
+function copyPrompt(){
+  navigator.clipboard.writeText(document.getElementById("mText").textContent)
+  .then(()=>{
+    const cs=document.getElementById("copyStatus");
+    cs.textContent="Copied!";
+    setTimeout(()=>cs.textContent="",1500);
   });
-};
+}
 
 /* =========================================================
    SNOW
    ========================================================= */
-const snowCount = window.innerWidth < 600 ? 25 : 50;
-for (let i = 0; i < snowCount; i++) {
-  const s = document.createElement("div");
-  s.className = "snowflake";
-  s.textContent = "❄";
-  s.style.left = Math.random() * 100 + "vw";
-  s.style.fontSize = 8 + Math.random() * 12 + "px";
-  s.style.animationDuration = 6 + Math.random() * 8 + "s";
-  document.body.appendChild(s);
+const canvas=document.getElementById("snow");
+const ctx=canvas.getContext("2d");
+let flakes=[];
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
 }
+class Flake{
+  constructor(){
+    this.x=Math.random()*canvas.width;
+    this.y=Math.random()*canvas.height;
+    this.r=Math.random()*2+1;
+    this.v=Math.random()*1+.4;
+    this.h=Math.random()*.5-.25;
+  }
+  move(){
+    this.y+=this.v;this.x+=this.h;
+    if(this.y>canvas.height){this.y=-10;this.x=Math.random()*canvas.width;}
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle="white";
+    ctx.fill();
+  }
+}
+function initSnow(){
+  resize();
+  flakes=Array.from({length:120},()=>new Flake());
+  loop();
+}
+function loop(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  flakes.forEach(f=>{f.move();f.draw();});
+  requestAnimationFrame(loop);
+}
+addEventListener("resize",resize);
+initSnow();
 </script>
+
 </body>
 </html>

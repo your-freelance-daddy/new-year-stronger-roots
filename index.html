@@ -330,8 +330,8 @@ html,body{
    ========================= */
 const stories=[
 "This year, we chose regeneration over resolutions. Less pushing. More listening. More care for what’s already here.",
-"This space is our winter gift to you. Not a plan to follow, but a pause—to breathe, reflect, and reset in your own way.",
-"Nature reminds us that growth is quiet before it is visible. The ornaments are invitations, not instructions—small starting points for whatever season you’re in.",
+"This space is our winter gift to you. Not a plan to follow, but a pause, to breathe, reflect, and reset in your own way.",
+"Nature reminds us that growth is quiet before it is visible. The ornaments are invitations, not instructions, but small starting points for whatever season you’re in.",
 "Everything here is free, private, and pressure-free. When you’re ready, step into the forest and let one ornament lead the way."
 ];
 let s=0;
@@ -360,10 +360,256 @@ nextBtn.onclick=()=>{
    PROMPTS (unchanged placeholders)
    ========================= */
 const prompts=[
-"Roots of Purpose","Flow & Balance","Collaboration Seeds","Story Harvest",
-"Digital Garden","Shared Light","Care & Renewal","Creative Flow",
-"Project Clarity","Harvest & Learning","Brave Experiments","Gratitude Canopy"
+const PROMPTS = [
+{
+  title: "Roots of Purpose",
+  text: `Like roots growing unseen beneath winter soil, purpose becomes clear when you slow down enough to listen.
+
+You are a strategic guide using nature-based thinking to help clarify direction, values, and long-term intent. This prompt comes from a reflective planning tool created by EKOLiTiKA, designed to support regeneration over pressure.
+
+Context for you to work with:
+• Organization or initiative name: [NAME_OF_ORGANISATION_OR_PROJECT]
+• My role or perspective: [MY_ROLE_OR_POSITION]
+• Who this purpose serves: [PEOPLE_OR_COMMUNITY_AT_THE_CENTER]
+• Current uncertainty or drift: [WHAT_FEELS_UNCLEAR_RIGHT_NOW]
+• Purpose we want to strengthen: [CORE_INTENTION_OR_GOAL]
+• Time horizon to consider: [TIMEFRAME_OR_SEASON]
+
+Your outputs must include:
+
+1. A strategic narrative (1–2 paragraphs) clarifying values, non-negotiables, and deeper purpose using grounded nature metaphors.
+2. A detailed, Excel/Sheets-ready table:
+
+Step | Strategic focus | Owner / Steward | Deadline | Check-in rhythm | Success metrics`
+},
+
+{
+  title: "Flow & Balance",
+  text: `Think of work as a river: it moves best when it follows its natural rhythm, not when it is forced.
+
+You are a strategic wellbeing and capacity planner, helping design sustainable flow between effort, rest, and attention. This tool is part of a regeneration-focused planning space created by EKOLiTiKA.
+
+Context to consider:
+• Initiative or team: [TEAM_OR_PROJECT_NAME]
+• My role in the system: [MY_ROLE]
+• Current energy pattern: [ENERGY_STATE_NOW]
+• Areas where balance is missing: [WHERE_FLOW_BREAKS]
+• Desired rhythm or outcome: [BALANCE_GOAL]
+• Timeframe: [TIMEFRAME]
+
+Please produce:
+1. A strategic narrative restoring flow using river and seasonal metaphors.
+2. A table-structured action plan:
+
+Step | Adjustment or boundary | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Collaboration Seeds",
+  text: `Some collaborations grow like seeds exchanged between forests—small at first, resilient over time.
+
+You are a partnership strategist using ecological thinking to design collaborations rooted in reciprocity and trust.
+
+Context:
+• Organization or collective: [ORGANISATION_NAME]
+• My role: [MY_ROLE]
+• Existing or potential partners: [PARTNER_TYPES_OR_NAMES]
+• Current collaboration challenge: [WHAT_IS_MISSING_OR_FRAGILE]
+• Desired collaboration outcome: [COLLABORATION_GOAL]
+• Timeframe: [TIMEFRAME]
+
+Outputs required:
+1. A strategic narrative on planting and protecting collaboration seeds.
+2. An Excel-ready table:
+
+Step | Partnership action | Who is involved | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Story Harvest",
+  text: `Before winter, forests gather what matters. Stories need the same care.
+
+You are a learning and narrative strategist helping teams harvest insights before they are lost.
+
+Context:
+• Project or organization: [PROJECT_NAME]
+• My role: [MY_ROLE]
+• Where stories live: [STORY_SOURCES]
+• What is currently undocumented: [WHAT_GETS_LOST]
+• Purpose of harvesting stories: [WHY_THIS_MATTERS_NOW]
+• Timeframe: [TIMEFRAME]
+
+Please provide:
+1. A strategic narrative on memory, learning, and continuity.
+2. A structured table:
+
+Step | Story focus | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Digital Garden",
+  text: `Digital spaces thrive when treated like gardens, not machines.
+
+You are a digital strategy gardener focused on sustainable platforms.
+
+Context:
+• Digital presence name: [PLATFORM_OR_BRAND]
+• My role: [MY_ROLE]
+• Main digital spaces: [CHANNELS_OR_PLATFORMS]
+• Current digital overload or neglect: [WHAT_FEELS_UNHEALTHY]
+• Desired digital outcome: [DIGITAL_GOAL]
+• Timeframe: [TIMEFRAME]
+
+Deliver:
+1. A strategic narrative on cultivating digital spaces.
+2. A Sheets-ready table:
+
+Step | Digital action | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Shared Light",
+  text: `Light travels best when it is shared, not hoarded.
+
+You are a visibility and amplification strategist focused on ethical sharing.
+
+Context:
+• Initiative: [INITIATIVE_NAME]
+• My role: [MY_ROLE]
+• Who deserves more light: [PEOPLE_OR_WORK_TO_AMPLIFY]
+• Current visibility gap: [WHAT_IS_UNSEEN]
+• Desired impact: [VISIBILITY_GOAL]
+• Timeframe: [TIMEFRAME]
+
+Outputs:
+1. A strategic narrative about shared visibility.
+2. A structured plan table:
+
+Step | Sharing action | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Care & Renewal",
+  text: `Nothing regenerates without rest—not forests, not people.
+
+You are a care-centered strategy planner embedding renewal into systems.
+
+Context:
+• Team or community: [TEAM_NAME]
+• My role: [MY_ROLE]
+• Main stressors present: [PRESSURES_OR_RISKS]
+• What feels depleted: [WHERE_CARE_IS_NEEDED]
+• Renewal goal: [CARE_OUTCOME]
+• Timeframe: [TIMEFRAME]
+
+Please create:
+1. A strategic narrative framing care as foundation.
+2. An Excel-ready table:
+
+Step | Care practice | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Creative Flow",
+  text: `Creativity returns when it feels safe to play.
+
+You are a creative process strategist designing low-pressure experimentation.
+
+Context:
+• Creative project: [PROJECT_NAME]
+• My role: [MY_ROLE]
+• Creative block or need: [WHAT_IS_STUCK]
+• Desired creative shift: [CREATIVE_GOAL]
+• Timeframe: [TIMEFRAME]
+
+Produce:
+1. A strategic narrative restoring creative flow.
+2. A structured table:
+
+Step | Creative action | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Project Clarity",
+  text: `Clear paths reduce fear and wasted energy.
+
+You are a project clarity strategist structuring work without rigidity.
+
+Context:
+• Project name: [PROJECT_NAME]
+• My role: [MY_ROLE]
+• Current confusion or risk: [WHAT_FEELS_MESSY]
+• What clarity would unlock: [CLARITY_GOAL]
+• Timeframe: [TIMEFRAME]
+
+Deliver:
+1. A strategic narrative on calm progress.
+2. An Excel-ready table:
+
+Step | Structural decision | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Harvest & Learning",
+  text: `Learning happens when the season is consciously closed.
+
+You are a learning and reflection strategist supporting integration.
+
+Context:
+• Activities or phase reviewed: [ACTIVITIES]
+• My role: [MY_ROLE]
+• What hasn’t been reflected on: [MISSING_LEARNING]
+• Desired learning outcome: [LEARNING_GOAL]
+• Timeframe: [TIMEFRAME]
+
+Please produce:
+1. A strategic narrative on transforming experience into insight.
+2. A table-structured plan:
+
+Step | Reflection focus | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Brave Experiments",
+  text: `Small experiments leave footprints that teach without harm.
+
+You are an experimentation strategist focused on safe-to-fail learning.
+
+Context:
+• Area to test: [EXPERIMENT_AREA]
+• My role: [MY_ROLE]
+• Fear or hesitation present: [WHAT_FEELS_RISKY]
+• Learning question: [WHAT_WE_WANT_TO_LEARN]
+• Timeframe: [TIMEFRAME]
+
+Create:
+1. A strategic narrative framing experimentation as learning.
+2. An Excel-ready table:
+
+Step | Experiment | Owner | Deadline | Check-in | Metrics`
+},
+
+{
+  title: "Gratitude Canopy",
+  text: `Gratitude creates shelter where trust can grow.
+
+You are a culture and trust strategist embedding appreciation into systems.
+
+Context:
+• Community or team: [TEAM_NAME]
+• My role: [MY_ROLE]
+• Where appreciation is missing: [GAPS_IN_RECOGNITION]
+• Desired cultural shift: [GRATITUDE_GOAL]
+• Timeframe: [TIMEFRAME]
+
+Please deliver:
+1. A strategic narrative on gratitude and resilience.
+2. A structured planning table:
+
+Step | Gratitude practice | Owner | Deadline | Check-in | Metrics`
+}
 ];
+;
 
 /* =========================
    ORNAMENTS – REALISTIC PLACEMENT
@@ -379,17 +625,19 @@ prompts.forEach((t,i)=>{
   o.style.top=positions[i][0]+"%";
   o.style.left=positions[i][1]+"%";
   o.dataset.title=t;
-  o.onclick=()=>openModal(t);
+o.onclick = () => {
+  openModal(PROMPTS[i]);
+};
   tree.appendChild(o);
 });
 
 /* =========================
    MODAL
    ========================= */
-function openModal(t){
-  document.getElementById("mTitle").textContent=t;
-  document.getElementById("mText").textContent="(prompt text unchanged)";
-  document.getElementById("modal").style.display="flex";
+function openModal(data){
+  document.getElementById("mTitle").textContent = data.title;
+  document.getElementById("mText").textContent = data.text;
+  document.getElementById("modal").style.display = "flex";
 }
 function closeModal(){
   document.getElementById("modal").style.display="none";

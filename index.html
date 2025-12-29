@@ -30,14 +30,13 @@ html,body{
 
 /* =========================
    REALISTIC FOREST BACKGROUND
-   (image-inspired, cinematic)
    ========================= */
 .forest-bg{
   position:fixed;
   inset:0;
   background:
     linear-gradient(to top, rgba(2,6,23,.9), rgba(2,6,23,.55)),
-     linear-gradient(135deg, #1a472a 0%, #2d6a4f 50%, #40916c 100%);
+    linear-gradient(135deg, #1a472a 0%, #2d6a4f 50%, #40916c 100%);
   background-size:cover;
   background-position:center;
   z-index:1;
@@ -67,7 +66,7 @@ html,body{
 }
 
 /* =========================
-   INTRO CARDS (unchanged)
+   INTRO CARDS
    ========================= */
 #intro{
   position:absolute;
@@ -76,17 +75,19 @@ html,body{
   align-items:center;
   justify-content:center;
   z-index:10;
-    transition:opacity .7s ease;
+  transition:opacity .7s ease;
 }
 .story-card{
   width:min(520px,90%);
   background:var(--glass);
   backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   border-radius:22px;
   padding:34px 30px 26px;
   box-shadow:0 30px 90px rgba(0,0,0,.65);
   text-align:center;
   animation:fadeUp .7s ease;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 .story-card p{
   font-size:1.05rem;
@@ -104,14 +105,23 @@ html,body{
   border:1px solid var(--text-soft);
   background:transparent;
   color:var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.card-nav button:hover:not(:disabled) {
+    background: rgba(255,255,255,0.1);
 }
 .card-nav button.primary{
   border-color:var(--accent-green);
+  background: rgba(111, 184, 156, 0.1);
 }
-.card-nav button:disabled{opacity:.3}
+.card-nav button.primary:hover {
+  background: rgba(111, 184, 156, 0.2);
+}
+.card-nav button:disabled{opacity:.3; cursor: not-allowed;}
 
 /* =========================
-   MAIN SCENE (unchanged)
+   MAIN SCENE
    ========================= */
 #scene{
   position:absolute;
@@ -132,12 +142,14 @@ html,body{
   width:100%;
   text-align:center;
   z-index:6;
+  padding: 0 20px;
 }
 .header a{
   color:var(--text-main);
   text-decoration:none;
   letter-spacing:2px;
   font-weight:500;
+  text-transform: uppercase;
 }
 .header p{
   margin-top:6px;
@@ -146,7 +158,7 @@ html,body{
 }
 
 /* ======================================================
-   ✨ REALISTIC TREE (PHOTO-BASED, NOT DRAWN)
+   THE TREE WRAPPER
    ====================================================== */
 .tree-wrap{
   position:absolute;
@@ -161,21 +173,20 @@ html,body{
   align-items:flex-end;
 }
 
-/* TREE IMAGE */
+/* NEW SVG TREE CONTAINER */
 .tree-photo{
-  position:absolute;
-  bottom:0;
+  position:relative;
   width:100%;
   height:100%;
-  background:
-     linear-gradient(to right, transparent calc(50% - 30px), #0d3b2f 0, #0d3b2f calc(100% - 0px), transparent 100%), linear-gradient(135deg, #1a472a 0%, #2d6a4f 50%, #40916c 100%);
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center bottom;
-  filter:
-    drop-shadow(0 40px 70px rgba(0,0,0,.85))
-    brightness(1.05)
-    contrast(1.05);
+  /* No more background/clip-path here, handled by SVG */
+}
+
+/* SVG styling to fit container */
+.tree-photo svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 10px 30px rgba(0,0,0,0.8));
+    overflow: visible;
 }
 
 /* ======================================================
@@ -183,8 +194,8 @@ html,body{
    ====================================================== */
 .ornament{
   position:absolute;
-  width:16px;
-  height:16px;
+  width:20px;
+  height:20px;
   border-radius:50%;
   cursor:pointer;
   background:
@@ -196,33 +207,41 @@ html,body{
     0 0 12px rgba(255,220,160,.9),
     0 0 22px rgba(255,220,160,.5);
   transition:transform .35s ease, box-shadow .35s ease;
+  z-index: 20; /* Ensure they sit on top of tree */
 }
 .ornament:hover{
-  transform:scale(1.8);
+  transform:scale(1.5);
   box-shadow:
     0 0 20px rgba(255,230,180,1),
     0 0 40px rgba(255,230,180,.8);
-  z-index:20;
+  z-index:30;
 }
 
+/* Tooltip */
 .ornament::after{
   content:attr(data-title);
   position:absolute;
-  top:-34px;
+  bottom: 30px; /* Position above ornament */
   left:50%;
   transform:translateX(-50%);
-  background:rgba(0,0,0,.75);
-  padding:5px 10px;
-  border-radius:8px;
-  font-size:.7rem;
+  background:rgba(0,0,0,.85);
+  padding:6px 12px;
+  border-radius:6px;
+  font-size:.75rem;
   white-space:nowrap;
   opacity:0;
-  transition:.2s;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.1);
 }
-.ornament:hover::after{opacity:1}
+.ornament:hover::after{
+    opacity:1;
+    transform:translateX(-50%) translateY(-5px);
+}
 
 /* =========================
-   MODAL (unchanged)
+   MODAL
    ========================= */
 .modal{
   position:fixed;
@@ -230,35 +249,49 @@ html,body{
   display:none;
   align-items:center;
   justify-content:center;
-  background:rgba(0,0,0,.55);
+  background:rgba(0,0,0,.7);
   backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
   z-index:50;
+  padding: 20px;
 }
 .modal-box{
-  width:min(720px,92%);
-  max-height:82%;
-  overflow:auto;
+  width:min(720px,100%);
+  max-height:90%;
+  overflow-y:auto;
   background:var(--glass);
   border-radius:24px;
   padding:32px;
   box-shadow:0 40px 120px rgba(0,0,0,.7);
   position:relative;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.modal h2 {
+    margin-top: 0;
+    color: var(--accent-gold);
 }
 .modal pre{
   white-space:pre-wrap;
-  font-size:.85rem;
+  font-size:.9rem;
   color:var(--text-soft);
   background:rgba(0,0,0,.35);
   padding:18px;
   border-radius:14px;
   border-left:4px solid var(--accent-green);
+  overflow-x: hidden;
+  font-family: 'Courier New', Courier, monospace;
 }
 .close{
   position:absolute;
-  top:16px;
-  right:20px;
-  font-size:1.2rem;
+  top:20px;
+  right:24px;
+  font-size:2rem;
+  line-height: 1;
   cursor:pointer;
+  color: var(--text-soft);
+}
+.close:hover {
+    color: white;
 }
 .copy-btn{
   margin-top:16px;
@@ -268,17 +301,38 @@ html,body{
   background:var(--accent-green);
   color:#052017;
   font-weight:600;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+.copy-btn:active {
+    transform: scale(0.98);
 }
 .copy-status{
-  margin-top:8px;
-  font-size:.75rem;
+  display: inline-block;
+  margin-left: 10px;
+  font-size:.85rem;
   color:var(--accent-green);
-  height:1em;
+  font-weight: 500;
 }
 
 @keyframes fadeUp{
   from{opacity:0;transform:translateY(12px)}
   to{opacity:1;transform:translateY(0)}
+}
+
+/* Custom Scrollbar for Modal */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1); 
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2); 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.3); 
 }
 </style>
 </head>
@@ -309,7 +363,39 @@ html,body{
 
   <div class="tree-wrap">
     <div class="tree-photo" id="tree">
-      <!-- Ornament positions tuned for realistic tree silhouette -->
+        <!-- SVG Tree Structure (Inspired by your example) -->
+        <svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+            <!-- Star on top (Golden) -->
+            <g transform="translate(150, 40)">
+                <polygon points="0,-30 10.8,-9.3 33.7,-9.3 15.8,5.9 24.1,27.1 0,15.9 -24.1,27.1 -15.8,5.9 -33.7,-9.3 -10.8,-9.3" 
+                         fill="#f5c77a" stroke="#d4a75a" stroke-width="2" stroke-linejoin="round"/>
+            </g>
+            
+            <!-- Tree layers (top to bottom) -->
+            <!-- Using slightly deeper greens to match your forest bg: #2d6a4f, #1a472a -->
+            
+            <!-- Top tier -->
+            <path d="M150 80 Q120 110 100 140 Q150 120 200 140 Q180 110 150 80 Z" 
+                  fill="#40916c" stroke="#1a472a" stroke-width="3" stroke-linejoin="round"/>
+            
+            <!-- Middle tier 1 -->
+            <path d="M150 140 Q100 170 80 210 Q150 180 220 210 Q200 170 150 140 Z" 
+                  fill="#2d6a4f" stroke="#1a472a" stroke-width="3" stroke-linejoin="round"/>
+            
+            <!-- Middle tier 2 -->
+            <path d="M150 210 Q90 240 70 290 Q150 250 230 290 Q210 240 150 210 Z" 
+                  fill="#1b5e43" stroke="#1a472a" stroke-width="3" stroke-linejoin="round"/>
+            
+            <!-- Bottom tier -->
+            <path d="M150 290 Q80 320 60 370 Q150 330 240 370 Q220 320 150 290 Z" 
+                  fill="#134732" stroke="#0e3626" stroke-width="3" stroke-linejoin="round"/>
+            
+            <!-- Trunk -->
+            <rect x="135" y="370" width="30" height="25" rx="5" 
+                  fill="#4a3b2a" stroke="#2b2218" stroke-width="2"/>
+        </svg>
+
+        <!-- Dynamic Ornaments injected here by JS -->
     </div>
   </div>
 </div>
@@ -321,13 +407,13 @@ html,body{
     <h2 id="mTitle"></h2>
     <pre id="mText"></pre>
     <button class="copy-btn" onclick="copyPrompt()">Copy prompt</button>
-    <div class="copy-status" id="copyStatus"></div>
+    <span class="copy-status" id="copyStatus"></span>
   </div>
 </div>
 
 <script>
 /* =========================
-   INTRO LOGIC (unchanged)
+   INTRO LOGIC
    ========================= */
 const stories=[
 "This year, we chose regeneration over resolutions. Less pushing. More listening. More care for what’s already here.",
@@ -339,16 +425,20 @@ let s=0;
 const storyText=document.getElementById("storyText");
 const backBtn=document.getElementById("backBtn");
 const nextBtn=document.getElementById("nextBtn");
+
 function renderStory(){
   storyText.textContent=stories[s];
   backBtn.disabled=s===0;
   nextBtn.textContent=s===stories.length-1?"Enter the winter forest":"Next";
 }
 renderStory();
+
 backBtn.onclick=()=>{if(s>0){s--;renderStory();}};
 nextBtn.onclick=()=>{
-  if(s<stories.length-1){s++;renderStory();}
-  else{
+  if(s<stories.length-1){
+    s++;
+    renderStory();
+  } else{
     document.getElementById("intro").style.opacity="0";
     setTimeout(()=>{
       document.getElementById("intro").style.display="none";
@@ -358,7 +448,7 @@ nextBtn.onclick=()=>{
 };
 
 /* =========================
-   PROMPTS (unchanged placeholders)
+   PROMPTS DATA
    ========================= */
 const PROMPTS = [
 {
@@ -609,25 +699,44 @@ Please deliver:
 Step | Gratitude practice | Owner | Deadline | Check-in | Metrics`
 }
 ];
-;
 
 /* =========================
    ORNAMENTS – REALISTIC PLACEMENT
    ========================= */
 const tree=document.getElementById("tree");
+
+// Updated positions to match the new curved SVG tree structure
+// Coordinates are roughly percentages: [top, left]
 const positions=[
-[18,50],[26,42],[30,58],[38,45],[42,60],[48,36],
-[52,54],[58,40],[62,62],[68,46],[72,56],[76,44]
+  // Top Tier (near star)
+  [25, 49], 
+  // Second Tier
+  [38, 41], [38, 58], 
+  // Third Tier
+  [50, 38], [52, 50], [50, 61],
+  // Fourth Tier
+  [65, 33], [67, 45], [67, 54], [65, 66],
+  // Bottom / Base
+  [82, 35], [82, 65]
 ];
-prompts.forEach((t,i)=>{
+
+// FIXED: Changed 'prompts' to 'PROMPTS'
+PROMPTS.forEach((t,i)=>{
   const o=document.createElement("div");
   o.className="ornament";
-  o.style.top=positions[i][0]+"%";
-  o.style.left=positions[i][1]+"%";
-  o.dataset.title==PROMPTS[i].title;
-o.onclick = () => {
-  openModal(PROMPTS[i]);
-};
+  
+  // Safety check in case we have more prompts than positions
+  const pos = positions[i] || [50,50]; 
+  
+  o.style.top=pos[0]+"%";
+  o.style.left=pos[1]+"%";
+  
+  // FIXED: Changed '==' to '='
+  o.dataset.title = t.title;
+  
+  o.onclick = () => {
+    openModal(t);
+  };
   tree.appendChild(o);
 });
 
@@ -638,30 +747,48 @@ function openModal(data){
   document.getElementById("mTitle").textContent = data.title;
   document.getElementById("mText").textContent = data.text;
   document.getElementById("modal").style.display = "flex";
+  document.getElementById("copyStatus").textContent="";
 }
+
 function closeModal(){
   document.getElementById("modal").style.display="none";
   document.getElementById("copyStatus").textContent="";
 }
+
 function copyPrompt(){
-  navigator.clipboard.writeText(document.getElementById("mText").textContent)
-  .then(()=>{
-    const cs=document.getElementById("copyStatus");
-    cs.textContent="Copied!";
-    setTimeout(()=>cs.textContent="",1500);
-  });
+    const textToCopy = document.getElementById("mText").textContent;
+    
+    // Fallback for iFrame environments
+    const textArea = document.createElement("textarea");
+    textArea.value = textToCopy;
+    document.body.appendChild(textArea);
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        const msg = successful ? 'Copied!' : 'Failed';
+        const cs = document.getElementById("copyStatus");
+        cs.textContent = msg;
+        setTimeout(()=>cs.textContent="", 2000);
+    } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+    }
+    
+    document.body.removeChild(textArea);
 }
 
 /* =========================
-   SNOW (unchanged)
+   SNOW LOGIC
    ========================= */
 const canvas=document.getElementById("snow");
 const ctx=canvas.getContext("2d");
 let flakes=[];
+
 function resize(){
   canvas.width=innerWidth;
   canvas.height=innerHeight;
 }
+
 class Flake{
   constructor(){
     this.x=Math.random()*canvas.width;
@@ -671,28 +798,38 @@ class Flake{
     this.h=Math.random()*.5-.25;
   }
   move(){
-    this.y+=this.v;this.x+=this.h;
-    if(this.y>canvas.height){this.y=-10;this.x=Math.random()*canvas.width;}
+    this.y+=this.v;
+    this.x+=this.h;
+    if(this.y>canvas.height){
+        this.y=-10;
+        this.x=Math.random()*canvas.width;
+    }
   }
   draw(){
     ctx.beginPath();
     ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
-    ctx.fillStyle="white";
+    ctx.fillStyle="rgba(255,255,255,0.8)";
     ctx.fill();
   }
 }
+
 function initSnow(){
   resize();
   flakes=Array.from({length:120},()=>new Flake());
   loop();
 }
+
 function loop(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   flakes.forEach(f=>{f.move();f.draw();});
   requestAnimationFrame(loop);
 }
-addEventListener("resize",resize);
+
+window.addEventListener("resize",resize);
+
+// Because the script doesn't crash now, this will actually run:
 initSnow();
+
 </script>
 
 </body>

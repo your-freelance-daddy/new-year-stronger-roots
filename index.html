@@ -1,762 +1,568 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EKOLiTiKA Winter Gift - Regeneration Over Resolutions</title>
-    <style>
-        /* ========================================
-           GLOBAL STYLES & RESET
-           ======================================== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EKOLiTiKA – Winter Gift</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to bottom, #0a1628, #1a2845, #0d1b2a);
-            color: #e8f0f7;
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
+<style>
+/* =========================================================
+   DESIGN TOKENS – adjust overall look here
+   ========================================================= */
+:root {
+  --night-1: #060b1c;
+  --night-2: #0a1530;
+  --night-3: #12214a;
+  --moon-glow: rgba(220,230,255,0.18);
 
-        /* ========================================
-           SNOWFALL CANVAS
-           Snow appears behind modals but above background
-           ======================================== */
-        #snowCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
+  --text-main: #f4f7ff;
+  --text-soft: #cfd6ff;
 
-        /* ========================================
-           INTRO STORY CARDS SECTION
-           First view - centered card with navigation
-           ======================================== */
-        #introSection {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
+  --forest-deep: #0b2a1f;
+  --forest-mid: #143d2d;
 
-        #introSection.hidden {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-        }
+  --ornament-light: #e9f6ff;
+  --ornament-shadow: rgba(0,0,0,0.4);
 
-        .story-card {
-            background: rgba(13, 27, 42, 0.85);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(232, 240, 247, 0.1);
-            border-radius: 16px;
-            padding: 48px 40px;
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-            position: absolute;
-        }
+  --modal-bg: rgba(10,15,35,0.9);
+}
 
-        .story-card.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+/* =========================================================
+   BASE
+   ========================================================= */
+* { box-sizing: border-box; }
 
-        .story-card p {
-            font-size: 1.25rem;
-            line-height: 1.8;
-            margin-bottom: 40px;
-            color: #e8f0f7;
-        }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: radial-gradient(circle at top, var(--night-3), var(--night-1));
+  color: var(--text-main);
+  overflow: hidden; /* one screen only */
+}
 
-        .card-nav {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-        }
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
 
-        .card-nav button {
-            background: rgba(76, 130, 89, 0.8);
-            color: #e8f0f7;
-            border: 1px solid rgba(232, 240, 247, 0.2);
-            padding: 12px 32px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+/* =========================================================
+   LAYOUT WRAPPER – everything on one screen
+   ========================================================= */
+#app {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
-        .card-nav button:hover:not(:disabled) {
-            background: rgba(76, 130, 89, 1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(76, 130, 89, 0.4);
-        }
+/* =========================================================
+   INTRO CARDS (CENTERED OVER EVERYTHING)
+   ========================================================= */
+#intro {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
 
-        .card-nav button:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-        }
+.story-card {
+  width: min(520px, 90%);
+  background: rgba(15, 25, 55, 0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 20px;
+  padding: 32px 28px 24px;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.55);
+  text-align: center;
+  animation: cardIn 0.6s ease;
+}
 
-        .card-nav button.enter-forest {
-            background: rgba(94, 156, 110, 0.9);
-            font-weight: 600;
-        }
+.story-card p {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
 
-        .card-nav button.enter-forest:hover {
-            background: rgba(94, 156, 110, 1);
-        }
+.card-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 26px;
+}
 
-        /* ========================================
-           FOREST SCENE SECTION
-           Main tree area with ornaments - hidden until intro ends
-           ======================================== */
-        #forestSection {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
+.card-nav button {
+  background: transparent;
+  border: 1px solid var(--text-soft);
+  color: var(--text-main);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+}
 
-        #forestSection.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+.card-nav button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
 
-        /* Logo area at top - TO REPLACE WITH ACTUAL LOGO */
-        .logo-area {
-            position: absolute;
-            top: 30px;
-            text-align: center;
-            z-index: 3;
-        }
+.enter-btn {
+  border-color: #8fd3b6;
+  color: #eafff4;
+}
 
-        .logo-area a {
-            text-decoration: none;
-            color: #e8f0f7;
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-        }
+/* =========================================================
+   FOREST SCENE – hidden until intro ends
+   ========================================================= */
+#scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s ease;
+}
 
-        /* Uncomment below and add logo image if available:
-        .logo-area img {
-            max-width: 200px;
-            height: auto;
-        }
-        */
+/* reveal after intro */
+#scene.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-        .intro-text {
-            position: absolute;
-            top: 100px;
-            font-size: 1.1rem;
-            text-align: center;
-            max-width: 600px;
-            line-height: 1.6;
-            color: #e8f0f7;
-            padding: 0 20px;
-        }
+/* =========================================================
+   SKY & MOON
+   ========================================================= */
+.sky {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 70% 20%, var(--moon-glow), transparent 55%),
+    linear-gradient(180deg, var(--night-3), var(--night-1));
+}
 
-        /* ========================================
-           REALISTIC CHRISTMAS TREE WITH SVG
-           ======================================== */
-        .tree-container {
-            position: relative;
-            width: 500px;
-            height: 550px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+.moon {
+  position: absolute;
+  top: 8%;
+  right: 12%;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff, #cfd8ff 60%);
+  box-shadow: 0 0 60px rgba(220,230,255,0.35);
+  opacity: 0.9;
+}
 
-        .tree-svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
-        }
+/* =========================================================
+   DISTANT FOREST (SILHOUETTES)
+   ========================================================= */
+.forest-back {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 45%;
+  background:
+    linear-gradient(to top,
+      rgba(5,15,25,0.95),
+      rgba(5,15,25,0.6),
+      transparent
+    );
+}
 
-        /* ========================================
-           REALISTIC ORNAMENTS
-           Positioned absolutely with gradient and glow effects
-           ======================================== */
-        .ornament {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 5;
-            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
-        }
+.forest-back::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      -60deg,
+      rgba(10,40,30,0.9) 0 40px,
+      rgba(10,40,30,0.7) 40px 80px
+    );
+  opacity: 0.25;
+}
 
-        .ornament::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, 
-                rgba(255, 255, 255, 0.9) 0%,
-                rgba(200, 220, 255, 0.7) 20%,
-                rgba(100, 150, 220, 0.8) 50%,
-                rgba(60, 100, 180, 0.9) 100%);
-            box-shadow: 
-                inset -5px -5px 15px rgba(0, 0, 0, 0.4),
-                inset 5px 5px 15px rgba(255, 255, 255, 0.3),
-                0 0 20px rgba(150, 200, 255, 0.5);
-        }
+/* =========================================================
+   LOGO
+   ========================================================= */
+.logo {
+  position: absolute;
+  top: 22px;
+  width: 100%;
+  text-align: center;
+  z-index: 3;
+}
+.logo a {
+  color: var(--text-main);
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+/* Replace text with image when ready:
+   <img src="YOUR_LOGO.png" alt="EKOLiTiKA logo">
+*/
 
-        .ornament::after {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 12px;
-            background: linear-gradient(to bottom, #8b7355, #6b5745);
-            border-radius: 2px 2px 0 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
+/* =========================================================
+   TREE – more realistic via layered gradients
+   ========================================================= */
+.tree-container {
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  transform: translateX(-50%);
+  width: min(340px, 80vw);
+  height: 70%;
+  z-index: 2;
+}
 
-        .ornament:hover {
-            transform: scale(1.15) translateY(-5px);
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.6));
-        }
+.tree {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+}
 
-        /* Different ornament colors for variety */
-        .ornament.red::before {
-            background: radial-gradient(circle at 35% 35%, 
-                rgba(255, 255, 255, 0.9) 0%,
-                rgba(255, 180, 180, 0.8) 20%,
-                rgba(220, 80, 80, 0.9) 50%,
-                rgba(160, 40, 40, 1) 100%);
-            box-shadow: 
-                inset -5px -5px 15px rgba(0, 0, 0, 0.4),
-                inset 5px 5px 15px rgba(255, 255, 255, 0.3),
-                0 0 20px rgba(255, 100, 100, 0.5);
-        }
+/* layered branches */
+.branch {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 28%;
+  background: radial-gradient(
+    ellipse at center,
+    #2e7a5a,
+    #184534 70%
+  );
+  clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+  filter: drop-shadow(0 10px 12px rgba(0,0,0,0.4));
+}
 
-        .ornament.gold::before {
-            background: radial-gradient(circle at 35% 35%, 
-                rgba(255, 255, 255, 0.9) 0%,
-                rgba(255, 240, 180, 0.8) 20%,
-                rgba(220, 180, 80, 0.9) 50%,
-                rgba(180, 140, 40, 1) 100%);
-            box-shadow: 
-                inset -5px -5px 15px rgba(0, 0, 0, 0.4),
-                inset 5px 5px 15px rgba(255, 255, 255, 0.3),
-                0 0 20px rgba(255, 220, 100, 0.5);
-        }
+.branch.b1 { top: 0; width: 90%; }
+.branch.b2 { top: 18%; width: 80%; }
+.branch.b3 { top: 36%; width: 70%; }
+.branch.b4 { top: 54%; width: 60%; }
 
-        .ornament.green::before {
-            background: radial-gradient(circle at 35% 35%, 
-                rgba(255, 255, 255, 0.9) 0%,
-                rgba(180, 255, 180, 0.8) 20%,
-                rgba(80, 180, 80, 0.9) 50%,
-                rgba(40, 120, 40, 1) 100%);
-            box-shadow: 
-                inset -5px -5px 15px rgba(0, 0, 0, 0.4),
-                inset 5px 5px 15px rgba(255, 255, 255, 0.3),
-                0 0 20px rgba(100, 255, 100, 0.5);
-        }
+/* trunk */
+.trunk {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 60px;
+  background: linear-gradient(#3a2a1a, #2a1d12);
+  border-radius: 6px;
+}
 
-        .ornament.silver::before {
-            background: radial-gradient(circle at 35% 35%, 
-                rgba(255, 255, 255, 1) 0%,
-                rgba(220, 220, 240, 0.9) 20%,
-                rgba(180, 180, 200, 0.9) 50%,
-                rgba(140, 140, 160, 1) 100%);
-            box-shadow: 
-                inset -5px -5px 15px rgba(0, 0, 0, 0.4),
-                inset 5px 5px 15px rgba(255, 255, 255, 0.4),
-                0 0 20px rgba(200, 200, 255, 0.6);
-        }
+/* =========================================================
+   ORNAMENTS – glass-like
+   ========================================================= */
+.ornament {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%, #ffffff, #bfe8d5 55%, #6fae92 100%);
+  box-shadow:
+    inset -2px -4px 6px rgba(0,0,0,0.25),
+    0 6px 12px var(--ornament-shadow);
+  cursor: pointer;
+}
 
-        /* Ornament positions - adjust these to reposition ornaments on tree */
-        .ornament[data-id="1"] { top: 60px; left: 48%; }
-        .ornament[data-id="2"] { top: 100px; left: 38%; }
-        .ornament[data-id="3"] { top: 105px; left: 58%; }
-        .ornament[data-id="4"] { top: 160px; left: 30%; }
-        .ornament[data-id="5"] { top: 165px; left: 48%; }
-        .ornament[data-id="6"] { top: 170px; left: 66%; }
-        .ornament[data-id="7"] { top: 240px; left: 25%; }
-        .ornament[data-id="8"] { top: 245px; left: 48%; }
-        .ornament[data-id="9"] { top: 250px; left: 71%; }
-        .ornament[data-id="10"] { top: 330px; left: 32%; }
-        .ornament[data-id="11"] { top: 335px; left: 48%; }
-        .ornament[data-id="12"] { top: 340px; left: 64%; }
+.ornament::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  width: 2px;
+  height: 6px;
+  background: #ccc;
+  transform: translateX(-50%);
+}
 
-        /* Tooltip on hover */
-        .ornament-tooltip {
-            position: absolute;
-            bottom: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(13, 27, 42, 0.95);
-            color: #e8f0f7;
-            padding: 8px 14px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            border: 1px solid rgba(232, 240, 247, 0.2);
-            z-index: 10;
-        }
+.ornament:hover::before {
+  content: attr(data-title);
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.75);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
 
-        .ornament:hover .ornament-tooltip {
-            opacity: 1;
-        }
+/* =========================================================
+   INTRO TEXT UNDER LOGO
+   ========================================================= */
+.scene-intro {
+  position: absolute;
+  top: 70px;
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-soft);
+  z-index: 3;
+}
 
-        /* Credits text below tree */
-        .credits {
-            position: absolute;
-            bottom: 30px;
-            text-align: center;
-            font-size: 0.95rem;
-            color: #b8c5d0;
-            max-width: 600px;
-            line-height: 1.6;
-            padding: 0 20px;
-        }
+/* =========================================================
+   MODAL
+   ========================================================= */
+.modal-overlay {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 6;
+  align-items: center;
+  justify-content: center;
+}
 
-        .credits a {
-            color: #5e9c6e;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
+.modal {
+  width: min(720px, 92%);
+  max-height: 80%;
+  overflow-y: auto;
+  background: var(--modal-bg);
+  border-radius: 20px;
+  padding: 28px;
+  position: relative;
+}
 
-        .credits a:hover {
-            color: #7bc090;
-            text-decoration: underline;
-        }
+.modal h2 {
+  margin-top: 0;
+}
 
-        /* ========================================
-           MODAL FOR PROMPT DISPLAY
-           ======================================== */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            padding: 20px;
-        }
+.modal pre {
+  white-space: pre-wrap;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
 
-        .modal-overlay.active {
-            display: flex;
-        }
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
 
-        .modal-content {
-            background: rgba(13, 27, 42, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(232, 240, 247, 0.2);
-            border-radius: 16px;
-            padding: 40px;
-            max-width: 700px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
+.copy-btn {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background: #6fb89c;
+  color: #052017;
+}
 
-        .modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            background: none;
-            border: none;
-            color: #e8f0f7;
-            font-size: 2rem;
-            cursor: pointer;
-            width: 36px;
-            height: 36px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 8px;
-            transition: background 0.3s ease;
-        }
+.copy-status {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  height: 1em;
+}
 
-        .modal-close:hover {
-            background: rgba(232, 240, 247, 0.1);
-        }
+/* =========================================================
+   SNOW
+   ========================================================= */
+.snowflake {
+  position: absolute;
+  top: -10px;
+  color: white;
+  opacity: 0.75;
+  pointer-events: none;
+  animation: fall linear infinite;
+  z-index: 4;
+}
 
-        .modal-title {
-            font-size: 1.8rem;
-            margin-bottom: 24px;
-            color: #7bc090;
-            font-weight: 600;
-        }
+@keyframes fall {
+  to { transform: translateY(110vh); }
+}
 
-        .prompt-text {
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(232, 240, 247, 0.1);
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 24px;
-            font-size: 0.95rem;
-            line-height: 1.8;
-            white-space: pre-wrap;
-            color: #e8f0f7;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .copy-button {
-            background: rgba(76, 130, 89, 0.9);
-            color: #e8f0f7;
-            border: 1px solid rgba(232, 240, 247, 0.2);
-            padding: 12px 32px;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .copy-button:hover {
-            background: rgba(76, 130, 89, 1);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(76, 130, 89, 0.4);
-        }
-
-        .copy-status {
-            display: inline-block;
-            margin-left: 16px;
-            color: #7bc090;
-            font-size: 0.9rem;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .copy-status.show {
-            opacity: 1;
-        }
-
-        /* ========================================
-           RESPONSIVE ADJUSTMENTS
-           ======================================== */
-        @media (max-width: 768px) {
-            .story-card {
-                padding: 32px 24px;
-            }
-
-            .story-card p {
-                font-size: 1.1rem;
-            }
-
-            .logo-area a {
-                font-size: 1.5rem;
-            }
-
-            .intro-text {
-                font-size: 1rem;
-                top: 90px;
-            }
-
-            .tree-container {
-                width: 350px;
-                height: 450px;
-            }
-
-            .ornament {
-                width: 32px;
-                height: 32px;
-            }
-
-            .modal-content {
-                padding: 28px;
-            }
-
-            .modal-title {
-                font-size: 1.5rem;
-            }
-
-            .prompt-text {
-                font-size: 0.9rem;
-                padding: 20px;
-            }
-
-            .credits {
-                font-size: 0.85rem;
-                bottom: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .card-nav {
-                flex-direction: column;
-            }
-
-            .card-nav button {
-                width: 100%;
-            }
-
-            .tree-container {
-                width: 280px;
-                height: 380px;
-            }
-
-            .ornament {
-                width: 28px;
-                height: 28px;
-            }
-        }
-
-        @media (max-height: 700px) {
-            .intro-text {
-                top: 80px;
-                font-size: 0.95rem;
-            }
-
-            .tree-container {
-                height: 400px;
-            }
-
-            .credits {
-                bottom: 15px;
-                font-size: 0.85rem;
-            }
-        }
-    </style>
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
 </head>
+
 <body>
-    <!-- Snowfall canvas -->
-    <canvas id="snowCanvas"></canvas>
+<div id="app">
 
-    <!-- ========================================
-         INTRO STORY CARDS SECTION
-         ======================================== -->
-    <div id="introSection">
-        <div class="story-card active" data-card="1">
-            <p>This year, we chose regeneration over resolutions. Less pushing. More listening. More care for what's already here.</p>
-            <div class="card-nav">
-                <button class="back-btn" disabled>Back</button>
-                <button class="next-btn">Next</button>
-            </div>
-        </div>
-        <div class="story-card" data-card="2">
-            <p>This space is our winter gift to you. Not a plan to follow, but a pause—to breathe, reflect, and reset in your own way.</p>
-            <div class="card-nav">
-                <button class="back-btn">Back</button>
-                <button class="next-btn">Next</button>
-            </div>
-        </div>
-        <div class="story-card" data-card="3">
-            <p>Nature reminds us that growth is quiet before it is visible. The ornaments are invitations, not instructions—small starting points for whatever season you're in.</p>
-            <div class="card-nav">
-                <button class="back-btn">Back</button>
-                <button class="next-btn">Next</button>
-            </div>
-        </div>
-        <div class="story-card" data-card="4">
-            <p>Everything here is free, private, and pressure-free. When you're ready, step into the forest and let one ornament lead the way.</p>
-            <div class="card-nav">
-                <button class="back-btn">Back</button>
-                <button class="enter-forest">Enter the winter forest</button>
-            </div>
-        </div>
+  <!-- INTRO -->
+  <div id="intro">
+    <div class="story-card">
+      <p id="storyText"></p>
+      <div class="card-nav">
+        <button id="backBtn">Back</button>
+        <button id="nextBtn">Next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOREST SCENE -->
+  <div id="scene">
+    <div class="sky"></div>
+    <div class="moon"></div>
+
+    <div class="logo">
+      <a href="https://ekolitika.framer.website" target="_blank">EKOLiTiKA</a>
     </div>
 
-    <!-- ========================================
-         FOREST SCENE SECTION
-         ======================================== -->
-    <div id="forestSection">
-        <!-- Logo area - Replace with actual EKOLiTiKA logo -->
-        <div class="logo-area">
-            <a href="https://ekolitika.framer.website" target="_blank" rel="noopener">
-                EKOLiTiKA
-                <!-- Uncomment below and replace with actual logo:
-                <img src="path-to-ekolitika-logo.png" alt="EKOLiTiKA Logo">
-                -->
-            </a>
-        </div>
-
-        <div class="intro-text">
-            Click an ornament to get a ready‑to‑copy AI prompt for your next growth season.
-        </div>
-
-        <!-- Tree with ornaments -->
-        <div class="tree-container">
-            <!-- Realistic SVG Christmas Tree -->
-            <svg class="tree-svg" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
-                <!-- Tree shadow -->
-                <ellipse cx="150" cy="390" rx="80" ry="10" fill="rgba(0,0,0,0.3)" />
-                
-                <!-- Trunk -->
-                <rect x="130" y="340" width="40" height="60" fill="#4a3428" />
-                <rect x="132" y="342" width="36" height="56" fill="#5a3d2e" />
-                
-                <!-- Bottom layer -->
-                <path d="M 150 340 L 50 340 L 150 220 Z" fill="#1a3a1a" />
-                <path d="M 150 340 L 250 340 L 150 220 Z" fill="#234028" />
-                <path d="M 150 340 L 50 340 L 60 330 L 150 230 Z" fill="#0d2415" opacity="0.3" />
-                
-                <!-- Middle layer -->
-                <path d="M 150 240 L 70 240 L 150 130 Z" fill="#1f4520" />
-                <path d="M 150 240 L 230 240 L 150 130 Z" fill="#2a5530" />
-                <path d="M 150 240 L 70 240 L 78 232 L 150 140 Z" fill="#0f2815" opacity="0.3" />
-                
-                <!-- Top layer -->
-                <path d="M 150 150 L 90 150 L 150 40 Z" fill="#255a25" />
-                <path d="M 150 150 L 210 150 L 150 40 Z" fill="#2f6835" />
-                <path d="M 150 150 L 90 150 L 96 144 L 150 50 Z" fill="#123018" opacity="0.3" />
-                
-                <!-- Texture and highlights -->
-                <path d="M 150 220 L 130 250 L 150 240 Z" fill="#3a6845" opacity="0.4" />
-                <path d="M 150 130 L 135 155 L 150 145 Z" fill="#4a7855" opacity="0.5" />
-                <path d="M 150 40 L 140 65 L 150 55 Z" fill="#5a8865" opacity="0.6" />
-                
-                <!-- Star on top -->
-                <g transform="translate(150, 20)">
-                    <polygon points="0,-15 4,-4 15,-2 6,5 8,16 0,10 -8,16 -6,5 -15,-2 -4,-4" fill="#FFD700" />
-                    <polygon points="0,-13 3,-5 12,-3 5,3 6,13 0,8 -6,13 -5,3 -12,-3 -3,-5" fill="#FFF4A3" />
-                    <circle cx="0" cy="-4" r="8" fill="#FFD700" opacity="0.3" filter="blur(4px)" />
-                </g>
-            </svg>
-
-            <!-- 12 Ornaments with different colors -->
-            <div class="ornament red" data-id="1" data-theme="Roots of Purpose">
-                <div class="ornament-tooltip">Roots of Purpose</div>
-            </div>
-            <div class="ornament gold" data-id="2" data-theme="Flow & Balance">
-                <div class="ornament-tooltip">Flow & Balance</div>
-            </div>
-            <div class="ornament green" data-id="3" data-theme="Collaboration Seeds">
-                <div class="ornament-tooltip">Collaboration Seeds</div>
-            </div>
-            <div class="ornament silver" data-id="4" data-theme="Story Harvest">
-                <div class="ornament-tooltip">Story Harvest</div>
-            </div>
-            <div class="ornament red" data-id="5" data-theme="Digital Garden">
-                <div class="ornament-tooltip">Digital Garden</div>
-            </div>
-            <div class="ornament gold" data-id="6" data-theme="Shared Light">
-                <div class="ornament-tooltip">Shared Light</div>
-            </div>
-            <div class="ornament green" data-id="7" data-theme="Care & Renewal">
-                <div class="ornament-tooltip">Care & Renewal</div>
-            </div>
-            <div class="ornament silver" data-id="8" data-theme="Creative Flow">
-                <div class="ornament-tooltip">Creative Flow</div>
-            </div>
-            <div class="ornament red" data-id="9" data-theme="Project Clarity">
-                <div class="ornament-tooltip">Project Clarity</div>
-            </div>
-            <div class="ornament gold" data-id="10" data-theme="Harvest & Learning">
-                <div class="ornament-tooltip">Harvest & Learning</div>
-            </div>
-            <div class="ornament green" data-id="11" data-theme="Brave Experiments">
-                <div class="ornament-tooltip">Brave Experiments</div>
-            </div>
-            <div class="ornament silver" data-id="12" data-theme="Gratitude Canopy">
-                <div class="ornament-tooltip">Gratitude Canopy</div>
-            </div>
-        </div>
-
-        <div class="credits">
-            A tool designed by <a href="https://ekolitika.framer.website" target="_blank" rel="noopener">EKOLiTiKA</a> for everyone who chooses REGENERATION over New Year's resolutions.
-        </div>
+    <div class="scene-intro">
+      Click an ornament to get a ready-to-copy AI prompt for your next growth season.
     </div>
 
-    <!-- ========================================
-         MODAL FOR PROMPT DISPLAY
-         ======================================== -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-content">
-            <button class="modal-close" id="modalClose">&times;</button>
-            <h2 class="modal-title" id="modalTitle"></h2>
-            <div class="prompt-text" id="promptText"></div>
-            <button class="copy-button" id="copyButton">Copy prompt</button>
-            <span class="copy-status" id="copyStatus">Copied!</span>
-        </div>
+    <div class="tree-container">
+      <div class="tree" id="tree">
+        <div class="branch b1"></div>
+        <div class="branch b2"></div>
+        <div class="branch b3"></div>
+        <div class="branch b4"></div>
+      </div>
+      <div class="trunk"></div>
     </div>
 
-    <script>
-        // ========================================
-        // PROMPT DATA
-        // To change prompt text, edit the content in this object
-        // ========================================
-        const promptData = {
-            "Roots of Purpose": `Like roots growing unseen beneath winter soil, purpose becomes clear when you slow down enough to listen.
-You are a strategic guide using nature-based thinking to help clarify direction, values, and long-term intent. This prompt comes from a reflective planning tool created by EKOLiTiKA, designed to support regeneration over pressure.
-Context for you to work with:
+    <div class="forest-back"></div>
+  </div>
 
-Organization or initiative name: [NAME_OF_ORGANISATION_OR_PROJECT]
+  <!-- MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <div class="close-btn" id="closeModal">×</div>
+      <h2 id="modalTitle"></h2>
+      <pre id="modalContent"></pre>
+      <button class="copy-btn" id="copyBtn">Copy prompt</button>
+      <div class="copy-status" id="copyStatus"></div>
+    </div>
+  </div>
 
-My role or perspective: [MY_ROLE_OR_POSITION]
+</div>
 
-Who this purpose serves: [PEOPLE_OR_COMMUNITY_AT_THE_CENTER]
+<script>
+/* =========================================================
+   INTRO STORY LOGIC
+   ========================================================= */
+const stories = [
+  "This year, we chose regeneration over resolutions. Less pushing. More listening. More care for what’s already here.",
+  "This space is our winter gift to you. Not a plan to follow, but a pause—to breathe, reflect, and reset in your own way.",
+  "Nature reminds us that growth is quiet before it is visible. The ornaments are invitations, not instructions—small starting points for whatever season you’re in.",
+  "Everything here is free, private, and pressure-free. When you’re ready, step into the forest and let one ornament lead the way."
+];
 
-Current uncertainty or drift: [WHAT_FEELS_UNCLEAR_RIGHT_NOW]
+let index = 0;
+const storyText = document.getElementById("storyText");
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
+const intro = document.getElementById("intro");
+const scene = document.getElementById("scene");
 
-Purpose we want to strengthen: [CORE_INTENTION_OR_GOAL]
+function renderStory() {
+  storyText.textContent = stories[index];
+  backBtn.disabled = index === 0;
+  nextBtn.textContent = index === stories.length - 1
+    ? "Enter the winter forest"
+    : "Next";
+}
+renderStory();
 
-Time horizon to consider: [TIMEFRAME_OR_SEASON]
-Your outputs must include:
-A strategic narrative (1–2 paragraphs) that clarifies our "roots": values, non-negotiables, and the deeper reason this work exists, using grounded nature metaphors and clear strategic language.
-A detailed, Excel/Sheets-ready table that translates purpose into action, using columns such as:
-Step | Strategic focus | Owner / Steward | Deadline | Check-in rhythm | Success metrics`,
+backBtn.onclick = () => {
+  if (index > 0) index--;
+  renderStory();
+};
 
-            "Flow & Balance": `Think of work as a river: it moves best when it follows its natural rhythm, not when it is forced.
-You are a strategic wellbeing and capacity planner, helping design sustainable flow between effort, rest, and attention. This tool is part of a regeneration-focused planning space created by EKOLiTiKA.
-Context to consider:
+nextBtn.onclick = () => {
+  if (index < stories.length - 1) {
+    index++;
+    renderStory();
+  } else {
+    intro.style.opacity = "0";
+    setTimeout(() => {
+      intro.style.display = "none";
+      scene.classList.add("visible");
+    }, 600);
+  }
+};
 
-Initiative or team: [TEAM_OR_PROJECT_NAME]
+/* =========================================================
+   ORNAMENT DATA & CREATION
+   Change positions here for fine-tuning layout
+   ========================================================= */
+const ornaments = [
+  { title: "Roots of Purpose", prompt: "..." },
+  { title: "Flow & Balance", prompt: "..." },
+  { title: "Collaboration Seeds", prompt: "..." },
+  { title: "Story Harvest", prompt: "..." },
+  { title: "Digital Garden", prompt: "..." },
+  { title: "Shared Light", prompt: "..." },
+  { title: "Care & Renewal", prompt: "..." },
+  { title: "Creative Flow", prompt: "..." },
+  { title: "Project Clarity", prompt: "..." },
+  { title: "Harvest & Learning", prompt: "..." },
+  { title: "Brave Experiments", prompt: "..." },
+  { title: "Gratitude Canopy", prompt: "..." }
+];
 
-My role in the system: [MY_ROLE]
+const tree = document.getElementById("tree");
 
-Current energy pattern (overload, stagnation, chaos): [ENERGY_STATE_NOW]
+ornaments.forEach((o, i) => {
+  const el = document.createElement("div");
+  el.className = "ornament";
+  el.dataset.title = o.title;
 
-Areas where balance is missing: [WHERE_FLOW_BREAKS]
+  /* Positioning relative to tree */
+  el.style.top = (80 + i * 24) + "px";
+  el.style.left = (120 + (i % 3) * 40) + "px";
 
-Desired rhythm or outcome: [BALANCE_GOAL]
+  el.onclick = () => openModal(o.title, o.prompt);
+  tree.appendChild(el);
+});
 
-Timeframe: [TIMEFRAME]
-Please produce:
-A strategic narrative describing how to restore flow, reduce friction, and protect energy over time, using river and seasonal metaphors.
-A table-structured action plan with columns such as:
-Step | Adjustment or boundary | Owner | Deadline | Check-in | Metrics (energy, clarity, pace)`,
+/* =========================================================
+   MODAL
+   ========================================================= */
+const modalOverlay = document.getElementById("modalOverlay");
+const modalTitle = document.getElementById("modalTitle");
+const modalContent = document.getElementById("modalContent");
+const copyBtn = document.getElementById("copyBtn");
+const copyStatus = document.getElementById("copyStatus");
 
-            "Collaboration Seeds": `Some collaborations grow like seeds exchanged between forests—small at first, resilient over time.
-You are a partnership strategist using ecological thinking to design collabor
+document.getElementById("closeModal").onclick = closeModal;
+modalOverlay.onclick = e => { if (e.target === modalOverlay) closeModal(); };
+
+function openModal(title, content) {
+  modalTitle.textContent = title;
+  modalContent.textContent = content;
+  modalOverlay.style.display = "flex";
+}
+
+function closeModal() {
+  modalOverlay.style.display = "none";
+  copyStatus.textContent = "";
+}
+
+copyBtn.onclick = () => {
+  navigator.clipboard.writeText(modalContent.textContent).then(() => {
+    copyStatus.textContent = "Copied!";
+    setTimeout(() => copyStatus.textContent = "", 1500);
+  });
+};
+
+/* =========================================================
+   SNOW
+   ========================================================= */
+const snowCount = window.innerWidth < 600 ? 25 : 50;
+for (let i = 0; i < snowCount; i++) {
+  const s = document.createElement("div");
+  s.className = "snowflake";
+  s.textContent = "❄";
+  s.style.left = Math.random() * 100 + "vw";
+  s.style.fontSize = 8 + Math.random() * 12 + "px";
+  s.style.animationDuration = 6 + Math.random() * 8 + "s";
+  document.body.appendChild(s);
+}
+</script>
+</body>
+</html>

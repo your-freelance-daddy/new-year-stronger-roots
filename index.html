@@ -96,352 +96,631 @@ button {
 /* =========================================================
    FOREST SECTION
    ========================================================= */
- #forest-section {
-            height: 100vh;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 1.5s ease;
-            position: relative;
-        }
+#forest {
+  min-height: 140vh;
+  position: relative;
+  background: linear-gradient(180deg, var(--bg-mid), var(--bg-light));
+  overflow: hidden;
+  padding-top: 80px;
+}
 
-        #forest-section.visible {
-            opacity: 1;
-            visibility: visible;
-        }
+/* moonlight */
+.moon {
+  position: absolute;
+  top: 60px;
+  right: 10%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255,255,255,0.18), rgba(255,255,255,0) 70%);
+  pointer-events: none;
+}
 
-        .header-logo {
-            text-align: center;
-            padding-top: 15px;
-        }
-        .header-logo a {
-            text-decoration: none;
-            color: white;
-            font-size: 1.4rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-        }
+/* distant trees */
+.forest-back {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 45%;
+  background: linear-gradient(
+    to top,
+    rgba(10,20,40,0.9),
+    rgba(10,20,40,0.3),
+    transparent
+  );
+}
 
-        .intro-line {
-            font-size: 0.85rem;
-            color: var(--text-dim);
-            margin-top: 4px;
-            max-width: 400px;
-        }
+/* =========================================================
+   LOGO AREA
+   ========================================================= */
+.logo {
+  position: relative;
+  text-align: center;
+  margin-bottom: 20px;
+  z-index: 2;
+}
+.logo a {
+  color: var(--text-main);
+  font-weight: 600;
+  text-decoration: none;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+}
+/* Replace text below with <img src="logo.png"> when ready */
+/* <img src="PATH_TO_LOGO" alt="EKOLiTiKA logo"> */
 
-        /* --- THE TREE --- */
-        .tree-stage {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            position: relative;
-        }
+/* =========================================================
+   TREE
+   ========================================================= */
+.tree-container {
+  position: relative;
+  width: 320px;
+  max-width: 90vw;
+  margin: 40px auto 0;
+  z-index: 2;
+}
 
-        .tree-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 380px;
-            height: 65vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.tree {
+  position: relative;
+  width: 100%;
+  height: 480px;
+}
 
-        .tree-svg {
-            height: 100%;
-            width: auto;
-            filter: drop-shadow(0 0 40px rgba(6, 78, 59, 0.5));
-        }
+.tree::before,
+.tree::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(to bottom, #245b43, #1b3f31);
+  border-radius: 50%;
+}
 
-        /* --- BRIGHTER ORNAMENTS --- */
-        .ornament {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 50;
-            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #10b981 60%, #064e3b 100%);
-            box-shadow: 
-                0 0 10px rgba(16, 185, 129, 0.6),
-                inset -2px -2px 4px rgba(0,0,0,0.4),
-                inset 2px 2px 4px rgba(255,255,255,0.8);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: ornamentShimmer 3s infinite alternate ease-in-out;
-        }
+.tree::before {
+  top: 0;
+  width: 100%;
+  height: 60%;
+}
+.tree::after {
+  top: 25%;
+  width: 80%;
+  height: 65%;
+}
 
-        .ornament.gold {
-            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #fbbf24 60%, #92400e 100%);
-            box-shadow: 
-                0 0 10px rgba(251, 191, 36, 0.6),
-                inset -2px -2px 4px rgba(0,0,0,0.4),
-                inset 2px 2px 4px rgba(255,255,255,0.8);
-        }
+/* trunk */
+.trunk {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 60px;
+  background: #3b2a1a;
+  border-radius: 8px;
+}
 
-        @keyframes ornamentShimmer {
-            0% { filter: brightness(1) contrast(1); transform: scale(1); }
-            100% { filter: brightness(1.3) contrast(1.1); transform: scale(1.1); }
-        }
+/* =========================================================
+   ORNAMENTS
+   Change positions via top/left below
+   ========================================================= */
+.ornament {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #ffffff, #9fd6c0);
+  box-shadow: 0 0 12px rgba(160, 220, 200, 0.8);
+  cursor: pointer;
+}
+.ornament:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.7);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
 
-        .ornament:hover {
-            transform: scale(1.6) !important;
-            box-shadow: 0 0 20px white;
-            z-index: 100;
-        }
+/* =========================================================
+   FOREST TEXT
+   ========================================================= */
+.forest-intro {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 20px;
+  font-size: 0.95rem;
+  color: var(--text-soft);
+  z-index: 2;
+  position: relative;
+}
 
-        .ornament::after {
-            content: attr(data-theme);
-            position: absolute;
-            top: -30px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 4px 12px;
-            background: rgba(2, 6, 23, 0.9);
-            color: white;
-            font-size: 0.7rem;
-            border-radius: 8px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-        .ornament:hover::after { opacity: 1; }
+.credits {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 0.75rem;
+  color: var(--text-soft);
+}
+.credits a {
+  color: var(--text-main);
+  text-decoration: underline;
+}
 
-        /* --- MODAL --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 20px;
-        }
-        .modal-content {
-            background: var(--modal-bg);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            width: 100%;
-            max-width: 500px;
-            border-radius: 20px;
-            padding: 25px;
-            position: relative;
-            box-shadow: 0 0 40px rgba(0,0,0,1);
-        }
-        .close-modal {
-            position: absolute; top: 15px; right: 20px;
-            background: none; border: none; color: white; font-size: 24px; cursor: pointer;
-        }
-        .prompt-box {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px;
-            border-radius: 12px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 0.85rem;
-            margin: 20px 0;
-            max-height: 200px;
-            overflow-y: auto;
-            color: #e2e8f0;
-            white-space: pre-wrap;
-        }
+/* =========================================================
+   SNOW
+   ========================================================= */
+.snowflake {
+  position: fixed;
+  top: -10px;
+  color: white;
+  opacity: 0.8;
+  pointer-events: none;
+  animation: fall linear infinite;
+  z-index: 3;
+}
 
-        .footer {
-            padding-bottom: 10px;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            text-align: center;
-        }
-        .footer a { color: var(--accent-green); text-decoration: none; }
-    </style>
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+  }
+}
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 5;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal {
+  background: rgba(15,25,55,0.95);
+  border-radius: 18px;
+  max-width: 720px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 28px;
+  position: relative;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal pre {
+  white-space: pre-wrap;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+}
+
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.copy-btn {
+  margin-top: 16px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: none;
+  background: var(--green-soft);
+  color: #eafff4;
+}
+
+.copy-status {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  color: var(--text-soft);
+  height: 1em;
+}
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+@keyframes fadeLift {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>
 </head>
+
 <body>
 
-    <div id="snow-container"></div>
-
-    <section id="intro-section">
-        <div class="card-container">
-            <div class="story-card active" id="card-1">
-                <p>This year, we chose regeneration over resolutions. Less pushing. More listening. More care for what’s already here.</p>
-                <button class="btn-next" onclick="showCard(2)">Continue</button>
-            </div>
-            <div class="story-card" id="card-2">
-                <p>This space is our winter gift to you. Not a plan to follow, but a pause—to breathe, reflect, and reset in your own way.</p>
-                <div>
-                    <button class="btn-back" onclick="showCard(1)">Back</button>
-                    <button class="btn-next" onclick="showCard(3)">Continue</button>
-                </div>
-            </div>
-            <div class="story-card" id="card-3">
-                <p>Nature reminds us that growth is quiet before it is visible. The ornaments are invitations, not instructions—small starting points for your next season.</p>
-                <div>
-                    <button class="btn-back" onclick="showCard(2)">Back</button>
-                    <button class="btn-next" onclick="showCard(4)">Continue</button>
-                </div>
-            </div>
-            <div class="story-card" id="card-4">
-                <p>Everything here is free, private, and pressure-free. Step into the forest and let one ornament lead the way.</p>
-                <button class="btn-enter" onclick="enterForest()">Enter the winter forest</button>
-            </div>
-        </div>
-    </section>
-
-    <section id="forest-section">
-        <header class="header-logo">
-            <a href="#">EKOLiTiKA</a>
-            <p class="intro-line">Pick an ornament to harvest an AI prompt for your next season.</p>
-        </header>
-
-        <div class="tree-stage">
-            <div class="tree-wrapper">
-                <svg class="tree-svg" viewBox="0 0 200 300" preserveAspectRatio="xMidYMid meet">
-                    <defs>
-                        <linearGradient id="trunkGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" style="stop-color:#1a120b" />
-                            <stop offset="50%" style="stop-color:#2d1e12" />
-                            <stop offset="100%" style="stop-color:#1a120b" />
-                        </linearGradient>
-                        <linearGradient id="treeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" style="stop-color:#065f46" />
-                            <stop offset="100%" style="stop-color:#022c22" />
-                        </linearGradient>
-                        <filter id="needleTexture">
-                            <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="4" result="noise"/>
-                            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
-                        </filter>
-                    </defs>
-                    <rect x="94" y="240" width="12" height="40" fill="url(#trunkGrad)" rx="1" />
-                    <path filter="url(#needleTexture)" d="M100 20 L40 250 L160 250 Z" fill="url(#treeGrad)" />
-                    <path filter="url(#needleTexture)" d="M100 60 L55 210 L145 210 Z" fill="rgba(6, 78, 59, 0.6)" />
-                </svg>
-
-                <!-- Carefully positioned ornaments inside the tree bounds -->
-                <div class="ornament gold" style="top: 28%; left: 47.5%;" data-theme="Roots of Purpose" onclick="openPrompt(0)"></div>
-                <div class="ornament" style="top: 40%; left: 42%;" data-theme="Flow & Balance" onclick="openPrompt(1)"></div>
-                <div class="ornament" style="top: 43%; left: 53%;" data-theme="Collaboration Seeds" onclick="openPrompt(2)"></div>
-                <div class="ornament gold" style="top: 55%; left: 38%;" data-theme="Story Harvest" onclick="openPrompt(3)"></div>
-                <div class="ornament" style="top: 58%; left: 48%;" data-theme="Digital Garden" onclick="openPrompt(4)"></div>
-                <div class="ornament gold" style="top: 55%; left: 59%;" data-theme="Shared Light" onclick="openPrompt(5)"></div>
-                <div class="ornament" style="top: 70%; left: 33%;" data-theme="Care & Renewal" onclick="openPrompt(6)"></div>
-                <div class="ornament gold" style="top: 73%; left: 42.5%;" data-theme="Creative Flow" onclick="openPrompt(7)"></div>
-                <div class="ornament" style="top: 71%; left: 54%;" data-theme="Project Clarity" onclick="openPrompt(8)"></div>
-                <div class="ornament gold" style="top: 70%; left: 64%;" data-theme="Brave Experiments" onclick="openPrompt(9)"></div>
-                <div class="ornament" style="top: 83%; left: 40%;" data-theme="Harvest & Learning" onclick="openPrompt(10)"></div>
-                <div class="ornament gold" style="top: 83%; left: 56%;" data-theme="Gratitude Canopy" onclick="openPrompt(11)"></div>
-            </div>
-        </div>
-
-        <footer class="footer">
-            Designed by <a href="https://ekolitika.framer.website">EKOLiTiKA</a> • 2024 Winter Ritual
-        </footer>
-    </section>
-
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal()">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-modal" onclick="closeModal()">×</button>
-            <h2 id="modalTitle" style="color: var(--accent-green); font-size: 1.2rem;">Theme Name</h2>
-            <div class="prompt-box" id="promptText">...</div>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-enter" onclick="copyPrompt()" style="flex:1">Copy Prompt</button>
-                <button class="btn-back" onclick="closeModal()">Close</button>
-            </div>
-            <div id="copyStatus" style="text-align:center; font-size: 0.8rem; color: #10b981; margin-top:10px; opacity:0; transition: opacity 0.3s;">Copied to clipboard!</div>
-        </div>
+<section id="intro">
+  <div class="story-card" id="storyCard">
+    <p id="storyText"></p>
+    <div class="card-nav">
+      <button id="backBtn">Back</button>
+      <button id="nextBtn">Next</button>
     </div>
+  </div>
+</section>
 
-    <script>
-        const prompts = [
-            { title: "Roots of Purpose", text: "You are a strategic guide using nature-based thinking to help clarify direction. Analyze my current professional landscape and identify 3 'root' values that should anchor my growth this season. How can these values survive a 'winter' of uncertainty?" },
-            { title: "Flow & Balance", text: "Think of work as a river: it moves best when it follows its natural rhythm. Help me design a weekly schedule that respects energy cycles rather than rigid clocks. Where are the dams blocking my flow, and how do I gently remove them?" },
-            { title: "Collaboration Seeds", text: "Identify 5 potential areas of mutual growth between my current projects and the people in my network. Act as a connector: draft a low-pressure reach-out message that invites co-creation without the weight of expectation." },
-            { title: "Story Harvest", text: "What were the 3 most important 'unspoken' lessons of my last year? Turn these into a personal narrative that highlights resilience and wisdom gained, preparing me to share my story with clarity and confidence." },
-            { title: "Digital Garden", text: "How can I transform my digital workspace from a 'factory' into a 'garden'? Suggest minimal, sustainable habits for information management that prioritize depth over distraction." },
-            { title: "Shared Light", text: "Light travels best when it is shared. Generate a list of ways I can mentor or support others in my field using only the resources I already have. Focus on small, impactful gestures." },
-            { title: "Care & Renewal", text: "Nothing regenerates without rest. Help me define 'Regenerative Productivity.' What are the essential indicators of a healthy work-life ecosystem, and how do I protect my personal 'soil' from burnout?" },
-            { title: "Creative Flow", text: "Creativity is a seasonal cycle. If I am currently in a 'winter' phase of production, suggest 5 ways to nourish my curiosity and collect inspiration without the pressure to produce immediately." },
-            { title: "Project Clarity", text: "Select my most complex project. Break it down into organic phases—from seed to fruit. What is the one thing I must prune today to ensure the project has the energy to grow tomorrow?" },
-            { title: "Brave Experiments", text: "Design a 'Safe-to-Fail' experiment for my current work. What is a small, low-risk test I can run to explore a new direction or idea without endangering my core stability?" },
-            { title: "Harvest & Learning", text: "Review my recent failures as 'compost.' What specific nutrients do these failures provide for my future growth? Help me extract the data and discard the shame." },
-            { title: "Gratitude Canopy", text: "Draft 3 specific messages of gratitude for people who supported my growth this year. Make them authentic, highlighting the specific 'shade' or 'shelter' they provided during difficult moments." }
-        ];
+<section id="forest">
+  <div class="moon"></div>
 
-        function showCard(index) {
-            document.querySelectorAll('.story-card').forEach(c => c.classList.remove('active'));
-            document.getElementById(`card-${index}`).classList.add('active');
-        }
+  <div class="logo">
+    <a href="https://ekolitika.framer.website" target="_blank">EKOLiTiKA</a>
+  </div>
 
-        function enterForest() {
-            const intro = document.getElementById('intro-section');
-            const forest = document.getElementById('forest-section');
-            intro.style.opacity = '0';
-            setTimeout(() => {
-                intro.style.display = 'none';
-                forest.classList.add('visible');
-            }, 1000);
-        }
+  <div class="forest-intro">
+    Click an ornament to get a ready-to-copy AI prompt for your next growth season.
+  </div>
 
-        function openPrompt(idx) {
-            const p = prompts[idx];
-            document.getElementById('modalTitle').innerText = p.title;
-            document.getElementById('promptText').innerText = p.text;
-            document.getElementById('modalOverlay').style.display = 'flex';
-            document.getElementById('copyStatus').style.opacity = '0';
-        }
+  <div class="tree-container">
+    <div class="tree" id="tree">
+      <!-- Ornaments (positions adjustable here) -->
+    </div>
+    <div class="trunk"></div>
+  </div>
 
-        function closeModal() {
-            document.getElementById('modalOverlay').style.display = 'none';
-        }
+  <div class="credits">
+    A tool designed by <a href="https://ekolitika.framer.website" target="_blank">EKOLiTiKA</a> for everyone who chooses REGENRATION over New Year’s resolutions.
+  </div>
 
-        function copyPrompt() {
-            const text = document.getElementById('promptText').innerText;
-            // Robust clipboard fallback
-            const textArea = document.createElement("textarea");
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                const status = document.getElementById('copyStatus');
-                status.style.opacity = '1';
-                setTimeout(() => status.style.opacity = '0', 2000);
-            } catch (err) {
-                console.error('Copy failed', err);
-            }
-            document.body.removeChild(textArea);
-        }
+  <div class="forest-back"></div>
+</section>
 
-        function createSnow() {
-            const container = document.getElementById('snow-container');
-            for (let i = 0; i < 50; i++) {
-                const flake = document.createElement('div');
-                flake.className = 'snowflake';
-                const size = Math.random() * 2 + 1 + 'px';
-                flake.style.width = size;
-                flake.style.height = size;
-                flake.style.left = Math.random() * 100 + 'vw';
-                flake.style.top = Math.random() * 100 + 'vh';
-                container.appendChild(flake);
-                
-                flake.animate([
-                    { transform: 'translateY(0)', opacity: 0.6 },
-                    { transform: 'translateY(100vh)', opacity: 0 }
-                ], {
-                    duration: Math.random() * 5000 + 5000,
-                    iterations: Infinity,
-                    delay: Math.random() * 5000
-                });
-            }
-        }
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="close-btn" id="closeModal">×</div>
+    <h2 id="modalTitle"></h2>
+    <pre id="modalContent"></pre>
+    <button class="copy-btn" id="copyBtn">Copy prompt</button>
+    <div class="copy-status" id="copyStatus"></div>
+  </div>
+</div>
 
-        window.onload = createSnow;
-    </script>
+<script>
+/* =========================================================
+   INTRO CARDS LOGIC
+   ========================================================= */
+const stories = [
+"This year, we chose regeneration over resolutions. Less pushing. More listening. More care for what’s already here.",
+"This space is our winter gift to you. Not a plan to follow, but a pause—to breathe, reflect, and reset in your own way.",
+"Nature reminds us that growth is quiet before it is visible. The ornaments are invitations, not instructions—small starting points for whatever season you’re in.",
+"Everything here is free, private, and pressure-free. When you’re ready, step into the forest and let one ornament lead the way."
+];
+
+let currentStory = 0;
+const storyText = document.getElementById("storyText");
+const backBtn = document.getElementById("backBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function renderStory() {
+  storyText.textContent = stories[currentStory];
+  backBtn.disabled = currentStory === 0;
+  if (currentStory === stories.length - 1) {
+    nextBtn.textContent = "Enter the winter forest";
+  } else {
+    nextBtn.textContent = "Next";
+  }
+}
+
+backBtn.onclick = () => {
+  if (currentStory > 0) currentStory--;
+  renderStory();
+};
+
+nextBtn.onclick = () => {
+  if (currentStory < stories.length - 1) {
+    currentStory++;
+    renderStory();
+  } else {
+    document.getElementById("forest").scrollIntoView({behavior: "smooth"});
+  }
+};
+
+renderStory();
+
+/* =========================================================
+   ORNAMENT DATA – change prompt text here if needed
+   ========================================================= */
+const ornamentsData = [
+  { title: "Roots of Purpose", prompt: `Like roots growing unseen beneath winter soil, purpose becomes clear when you slow down enough to listen.
+You are a strategic guide using nature-based thinking to help clarify direction, values, and long-term intent. This prompt comes from a reflective planning tool created by EKOLiTiKA, designed to support regeneration over pressure.
+Context for you to work with:
+
+Organization or initiative name: [NAME_OF_ORGANISATION_OR_PROJECT]
+
+My role or perspective: [MY_ROLE_OR_POSITION]
+
+Who this purpose serves: [PEOPLE_OR_COMMUNITY_AT_THE_CENTER]
+
+Current uncertainty or drift: [WHAT_FEELS_UNCLEAR_RIGHT_NOW]
+
+Purpose we want to strengthen: [CORE_INTENTION_OR_GOAL]
+
+Time horizon to consider: [TIMEFRAME_OR_SEASON]
+Your outputs must include:
+A strategic narrative (1–2 paragraphs) that clarifies our “roots”: values, non-negotiables, and the deeper reason this work exists, using grounded nature metaphors and clear strategic language.
+A detailed, Excel/Sheets-ready table that translates purpose into action, using columns such as:
+Step | Strategic focus | Owner / Steward | Deadline | Check-in rhythm | Success metrics`},
+  /* Remaining prompts are included verbatim below */
+];
+
+const remainingPrompts = [
+["Flow & Balance", `Think of work as a river: it moves best when it follows its natural rhythm, not when it is forced.
+You are a strategic wellbeing and capacity planner, helping design sustainable flow between effort, rest, and attention. This tool is part of a regeneration-focused planning space created by EKOLiTiKA.
+Context to consider:
+
+Initiative or team: [TEAM_OR_PROJECT_NAME]
+
+My role in the system: [MY_ROLE]
+
+Current energy pattern (overload, stagnation, chaos): [ENERGY_STATE_NOW]
+
+Areas where balance is missing: [WHERE_FLOW_BREAKS]
+
+Desired rhythm or outcome: [BALANCE_GOAL]
+
+Timeframe: [TIMEFRAME]
+Please produce:
+A strategic narrative describing how to restore flow, reduce friction, and protect energy over time, using river and seasonal metaphors.
+A table-structured action plan with columns such as:
+Step | Adjustment or boundary | Owner | Deadline | Check-in | Metrics (energy, clarity, pace)`],
+["Collaboration Seeds", `Some collaborations grow like seeds exchanged between forests—small at first, resilient over time.
+You are a partnership strategist using ecological thinking to design collaborations rooted in reciprocity and trust. This prompt is part of a partner-gift platform developed by EKOLiTiKA.
+Context:
+
+Organization or collective: [ORGANISATION_NAME]
+
+My role: [MY_ROLE]
+
+Existing or potential partners: [PARTNER_TYPES_OR_NAMES]
+
+Current collaboration challenge: [WHAT_IS_MISSING_OR_FRAGILE]
+
+Desired collaboration outcome: [COLLABORATION_GOAL]
+
+Timeframe: [TIMEFRAME]
+Outputs required:
+A strategic narrative outlining how to plant, nurture, and protect collaboration seeds.
+An Excel-ready table with columns such as:
+Step | Partnership action | Who is involved | Owner | Deadline | Check-in | Metrics (trust, reciprocity, output)`],
+["Story Harvest", `Before winter, forests gather what matters. Stories need the same care.
+You are a learning and narrative strategist, helping teams harvest insights before they are lost. This reflective tool was created by EKOLiTiKA to support gentle knowledge retention.
+Context:
+
+Project or organization: [PROJECT_NAME]
+
+My role: [MY_ROLE]
+
+Where stories live (projects, people, moments): [STORY_SOURCES]
+
+What is currently undocumented: [WHAT_GETS_LOST]
+
+Purpose of harvesting stories: [WHY_THIS_MATTERS_NOW]
+
+Timeframe: [TIMEFRAME]
+Please provide:
+A strategic narrative explaining how story harvesting strengthens memory, learning, and continuity.
+A structured table with columns such as:
+Step | Story focus | Owner | Deadline | Check-in | Metrics (captured, reused, shared)`],
+["Digital Garden", `Digital spaces thrive when treated like gardens, not machines.
+You are a digital strategy gardener, focused on tending platforms sustainably. This prompt comes from a nature-inspired planning space by EKOLiTiKA.
+Context:
+
+Digital presence name: [PLATFORM_OR_BRAND]
+
+My role: [MY_ROLE]
+
+Main digital spaces: [CHANNELS_OR_PLATFORMS]
+
+Current digital overload or neglect: [WHAT_FEELS_UNHEALTHY]
+
+Desired digital outcome: [DIGITAL_GOAL]
+
+Timeframe: [TIMEFRAME]
+Deliver:
+A strategic narrative describing how to cultivate, prune, and nourish digital spaces.
+A Sheets-ready table with columns such as:
+Step | Digital action | Owner | Deadline | Check-in | Metrics (reach, resonance, sustainability)`],
+["Shared Light", `Light travels best when it is shared, not hoarded.
+You are a visibility and amplification strategist, focused on ethical sharing. This reflective prompt is part of a gift-based planning platform by EKOLiTiKA.
+Context:
+
+Initiative: [INITIATIVE_NAME]
+
+My role: [MY_ROLE]
+
+Who deserves more light: [PEOPLE_OR_WORK_TO_AMPLIFY]
+
+Current visibility gap: [WHAT_IS_UNSEEN]
+
+Desired impact: [VISIBILITY_GOAL]
+
+Timeframe: [TIMEFRAME]
+Outputs:
+A strategic narrative about sharing light in ways that build trust and collective strength.
+A structured plan table with columns such as:
+Step | Sharing action | Owner | Deadline | Check-in | Metrics (reach, trust, reciprocity)`],
+["Care & Renewal", `Nothing regenerates without rest—not forests, not people.
+You are a care-centered strategy planner, helping embed renewal into systems. This prompt is part of EKOLiTiKA’s regeneration-first toolkit.
+Context:
+
+Team or community: [TEAM_NAME]
+
+My role: [MY_ROLE]
+
+Main stressors present: [PRESSURES_OR_RISKS]
+
+What feels depleted: [WHERE_CARE_IS_NEEDED]
+
+Renewal goal: [CARE_OUTCOME]
+
+Timeframe: [TIMEFRAME]
+Please create:
+A strategic narrative framing care as a foundation for long-term impact.
+An Excel-ready table with columns such as:
+Step | Care practice | Owner | Deadline | Check-in | Metrics (energy, safety, continuity)`],
+["Creative Flow", `Creativity returns when it feels safe to play.
+You are a creative process strategist, designing low-pressure systems for experimentation. This prompt comes from a creative planning space developed by EKOLiTiKA.
+Context:
+
+Creative project: [PROJECT_NAME]
+
+My role: [MY_ROLE]
+
+Creative block or need: [WHAT_IS_STUCK]
+
+Desired creative shift: [CREATIVE_GOAL]
+
+Timeframe: [TIMEFRAME]
+Produce:
+A strategic narrative describing how to restore creative flow using nature-based metaphors.
+A structured table with columns such as:
+Step | Creative action | Owner | Deadline | Check-in | Metrics (output, ease, learning)`],
+["Project Clarity", `Clear paths reduce fear and wasted energy.
+You are a project clarity strategist, helping structure work without rigidity. This prompt is part of EKOLiTiKA’s gentle planning tools.
+Context:
+
+Project name: [PROJECT_NAME]
+
+My role: [MY_ROLE]
+
+Current confusion or risk: [WHAT_FEELS_MESSY]
+
+What clarity would unlock: [CLARITY_GOAL]
+
+Timeframe: [TIMEFRAME]
+Deliver:
+A strategic narrative describing how structure can support calm progress.
+A structured planning table with columns such as:
+Step | Structural decision | Owner | Deadline | Check-in | Metrics (clarity, progress, risk reduction)`],
+["Harvest & Learning", `Learning happens when the season is consciously closed.
+You are a learning and reflection strategist, supporting closure and integration. This prompt comes from EKOLiTiKA’s reflection-oriented platform.
+Context:
+
+Activities or phase reviewed: [ACTIVITIES]
+
+My role: [MY_ROLE]
+
+What hasn’t been reflected on: [MISSING_LEARNING]
+
+Desired learning outcome: [LEARNING_GOAL]
+
+Timeframe: [TIMEFRAME]
+Please produce:
+A strategic narrative on transforming experience into insight.
+A table-structured plan with columns such as:
+Step | Reflection focus | Owner | Deadline | Check-in | Metrics (learning captured, applied)`],
+["Brave Experiments", `Small experiments leave footprints that teach without harm.
+You are an experimentation strategist, focused on safe-to-fail learning. This prompt is part of EKOLiTiKA’s regenerative planning tools.
+Context:
+
+Area to test: [EXPERIMENT_AREA]
+
+My role: [MY_ROLE]
+
+Fear or hesitation present: [WHAT_FEELS_RISKY]
+
+Learning question: [WHAT_WE_WANT_TO_LEARN]
+
+Timeframe: [TIMEFRAME]
+Create:
+A strategic narrative framing experimentation as learning, not success or failure.
+An Excel-ready table with columns such as:
+Step | Experiment | Owner | Deadline | Check-in | Metrics (learning, signal, next decision)`],
+["Gratitude Canopy", `Gratitude creates shelter where trust can grow.
+You are a culture and trust strategist, helping embed appreciation into systems. This prompt is part of a values-based toolkit created by EKOLiTiKA.
+Context:
+
+Community or team: [TEAM_NAME]
+
+My role: [MY_ROLE]
+
+Where appreciation is missing: [GAPS_IN_RECOGNITION]
+
+Desired cultural shift: [GRATITUDE_GOAL]
+
+Timeframe: [TIMEFRAME]
+Please deliver:
+A strategic narrative describing how gratitude strengthens resilience and collaboration.
+A structured planning table with columns such as:
+Step | Gratitude practice | Owner | Deadline | Check-in | Metrics (trust, morale, continuity)`]
+];
+
+remainingPrompts.forEach(p => ornamentsData.push({title: p[0], prompt: p[1]}));
+
+/* =========================================================
+   CREATE ORNAMENTS
+   ========================================================= */
+const tree = document.getElementById("tree");
+ornamentsData.forEach((o, i) => {
+  const el = document.createElement("div");
+  el.className = "ornament";
+  el.dataset.title = o.title;
+  el.style.top = (40 + i * 30) + "px";
+  el.style.left = (60 + (i % 3) * 80) + "px";
+  el.onclick = () => openModal(o.title, o.prompt);
+  tree.appendChild(el);
+});
+
+/* =========================================================
+   MODAL LOGIC
+   ========================================================= */
+const modalOverlay = document.getElementById("modalOverlay");
+const modalTitle = document.getElementById("modalTitle");
+const modalContent = document.getElementById("modalContent");
+const copyBtn = document.getElementById("copyBtn");
+const copyStatus = document.getElementById("copyStatus");
+document.getElementById("closeModal").onclick = closeModal;
+
+function openModal(title, content) {
+  modalTitle.textContent = title;
+  modalContent.textContent = content;
+  modalOverlay.style.display = "flex";
+}
+
+function closeModal() {
+  modalOverlay.style.display = "none";
+  copyStatus.textContent = "";
+}
+
+modalOverlay.onclick = e => {
+  if (e.target === modalOverlay) closeModal();
+};
+
+copyBtn.onclick = () => {
+  navigator.clipboard.writeText(modalContent.textContent).then(() => {
+    copyStatus.textContent = "Copied!";
+    setTimeout(() => copyStatus.textContent = "", 1500);
+  });
+};
+
+/* =========================================================
+   SNOWFALL
+   ========================================================= */
+const snowCount = window.innerWidth < 600 ? 30 : 60;
+for (let i = 0; i < snowCount; i++) {
+  const snow = document.createElement("div");
+  snow.className = "snowflake";
+  snow.textContent = "❄";
+  snow.style.left = Math.random() * 100 + "vw";
+  snow.style.animationDuration = 5 + Math.random() * 10 + "s";
+  snow.style.fontSize = 8 + Math.random() * 12 + "px";
+  document.body.appendChild(snow);
+}
+</script>
+
 </body>
 </html>
